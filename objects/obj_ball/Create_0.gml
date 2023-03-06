@@ -20,9 +20,9 @@ move_and_return = function(_x, _y) {
 	can_move = false
 	
 	var _value = { x: _x, y: _y }
-	agenda_create(self, function(_create_todo, _value) {
+	agenda_create(self, function(_agenda, _value) {
 		var _speed = 8
-		move(_value.x, _value.y, _speed, _create_todo())
+		move(_value.x, _value.y, _speed, _agenda.create_todo())
 		
 		return {
 			x: x,
@@ -30,18 +30,18 @@ move_and_return = function(_x, _y) {
 			speed: _speed,
 		}
 		
-	}, _value).and_then(function(_create_todo, _value) {
+	}, _value).and_then(function(_agenda, _value) {
 		var _fireworks = []
 		for(var _i = 0; _i < irandom_range(6, 12); _i ++) {
 			var _firework = instance_create_depth(x, y, depth - 1, obj_firework, {
-				todo: _create_todo(),
+				todo: _agenda.create_todo(),
 			})
 		}
 		
 		return _value
 		
-	}).and_then(function(_create_todo, _value) {
-		move(_value.x, _value.y, _value.speed, _create_todo())
+	}).and_then(function(_agenda, _value) {
+		move(_value.x, _value.y, _value.speed, _agenda.create_todo())
 		
 	}).and_finally(function(_value) {
 		can_move = true
