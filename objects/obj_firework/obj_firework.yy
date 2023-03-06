@@ -25,7 +25,10 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "spr_firework",
+    "path": "sprites/spr_firework/spr_firework.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

@@ -33,6 +33,7 @@
     {"id":{"name":"spr_firework","path":"sprites/spr_firework/spr_firework.yy",},"order":6,},
     {"id":{"name":"TGMX_Experimental","path":"scripts/TGMX_Experimental/TGMX_Experimental.yy",},"order":12,},
     {"id":{"name":"TGMX_7_Properties","path":"scripts/TGMX_7_Properties/TGMX_7_Properties.yy",},"order":9,},
+    {"id":{"name":"trace","path":"scripts/trace/trace.yy",},"order":8,},
     {"id":{"name":"TGMX_System","path":"scripts/TGMX_System/TGMX_System.yy",},"order":1,},
     {"id":{"name":"TGMX_3_EventCallbacks","path":"scripts/TGMX_3_EventCallbacks/TGMX_3_EventCallbacks.yy",},"order":5,},
     {"id":{"name":"TGMX_9_Settings","path":"scripts/TGMX_9_Settings/TGMX_9_Settings.yy",},"order":11,},

@@ -17,7 +17,9 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static __check = function() {
+		trace(array_length(todo_list), "todos remain")
 		if locked && array_length(todo_list) == 0 {
+			trace("resolving order")
 			if callback {
 				callback(value)
 			}
@@ -28,35 +30,15 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static __create_todo = function() {
-		var _todo = function(_done = true) {
-			static done = false
-			static __self = self
-			
-			done = _done
-			
-			if done {
-				for(var _i = 0; _i < array_length(__self.todo_list); _i ++) {
-					var _todo = __self.todo_list[_i]
-					var _todo_static = static_get(_todo)
-			
-					if _todo_static.done {
-						array_delete(__self.todo_list, _i, 1)
-						__self.__check()
-				
-						break
-					}
-				}
-			}
-		}
-		
-		_todo(false) // static values don't exist until after a function has been called for the first time
+		var _todo = new __Todo(self)
 		
 		array_push(todo_list, _todo)
 		
-		return _todo
+		return _todo.finish
 	}
 	
 	static __handle = function(_value) {
+		trace("handling order")
 		var _handler = method(target, handler)
 		var _create_todo = function() {
 			return __create_todo()
@@ -65,6 +47,38 @@ function __Order(_target, _handler) constructor{
 		locked = true
 		__check()
 	}
+}
+
+function __Todo(_order) constructor{
+	order = _order
+	is_finished = false
+	
+	finish = function(_self = undefined) {
+		static __self = _self
+		
+		with __self {
+			if is_finished || _self {
+				exit
+			}
+		
+			is_finished = true
+		
+			with order {
+				for(var _i = 0; _i < array_length(todo_list); _i ++) {
+					var _todo = todo_list[_i]
+			
+					if _todo.is_finished {
+						array_delete(todo_list, _i, 1)
+						__check()
+				
+						break
+					}
+				}
+			}
+		}
+	}
+	
+	finish(self)
 }
 
 function order_create(_target, _handler, _value = undefined) {

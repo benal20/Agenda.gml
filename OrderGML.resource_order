@@ -16,6 +16,7 @@
     {"name":"spr_firework","order":6,"path":"sprites/spr_firework/spr_firework.yy",},
     {"name":"TGMX_Experimental","order":12,"path":"scripts/TGMX_Experimental/TGMX_Experimental.yy",},
     {"name":"TGMX_7_Properties","order":9,"path":"scripts/TGMX_7_Properties/TGMX_7_Properties.yy",},
+    {"name":"trace","order":8,"path":"scripts/trace/trace.yy",},
     {"name":"TGMX_System","order":1,"path":"scripts/TGMX_System/TGMX_System.yy",},
     {"name":"TGMX_3_EventCallbacks","order":5,"path":"scripts/TGMX_3_EventCallbacks/TGMX_3_EventCallbacks.yy",},
     {"name":"TGMX_9_Settings","order":11,"path":"scripts/TGMX_9_Settings/TGMX_9_Settings.yy",},
