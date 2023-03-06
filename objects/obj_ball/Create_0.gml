@@ -1,5 +1,5 @@
 can_move = true
-goal = {x: 0, y: 0}
+goal = { x: 0, y: 0 }
 callback = undefined
 
 move = function(_x, _y) {
@@ -9,10 +9,7 @@ move = function(_x, _y) {
 	
 	can_move = false
 	
-	var _value = {
-		x: _x,
-		y: _y,
-	}
+	var _value = { x: _x, y: _y }
 	
 	agenda_create(self, function(_create_todo, _value) {
 		direction = point_direction(x, y, _value.x, _value.y)
@@ -21,10 +18,11 @@ move = function(_x, _y) {
 		
 		var _todo = _create_todo()
 		callback = method(_todo, function() {
-			finish()
+			complete()
 		})
 		
 		return irandom_range(5, 10)
+		
 	}, _value).and_then(function(_create_todo, _value) {
 		var _fireworks = []
 		for(var _i = 0; _i < _value; _i ++) {

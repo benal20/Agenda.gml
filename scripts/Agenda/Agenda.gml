@@ -1,11 +1,7 @@
 
 /// feather ignore all
 
-function __Agenda(_scope, _handler) constructor{
-	if !is_callable(_handler) {
-		show_error("handler is not a method or function.", true)
-	}
-	
+function __Agenda(_scope = {}, _handler) constructor{
 	__scope = _scope
 	__handler = _handler
 	__todo_list = []
@@ -14,17 +10,15 @@ function __Agenda(_scope, _handler) constructor{
 	__next_agenda = undefined
 	__final_callback = undefined
 	
+	/// @param	{function} handler function or method
 	static and_then = function(_handler) {
 		__next_agenda = new __Agenda(__scope, _handler)
 		
 		return __next_agenda
 	}
 	
+	/// @param {function} callback function or method
 	static and_finally = function(_callback) {
-		if !is_callable(_callback) {
-			show_error("and_finally callback is not a method or function.", true)
-		}
-	
 		__final_callback = method(__scope, _callback)
 	}
 	
@@ -46,8 +40,8 @@ function __Agenda(_scope, _handler) constructor{
 		return _todo
 	}
 	
-	static __finish_todo = function(_todo) {
-		if !_todo.__is_finished {
+	static __complete_todo = function(_todo) {
+		if !_todo.__is_completed {
 			exit
 		}
 		
@@ -69,24 +63,29 @@ function __Agenda(_scope, _handler) constructor{
 }
 
 function __Todo(_agenda) constructor{
-	__on_finish = method(_agenda, _agenda.__finish_todo)
-	__is_finished = false
+	__on_complete = method(_agenda, _agenda.__complete_todo)
+	__is_completed = false
 	
-	static finish = function() {
-		if __is_finished {
+	static complete = function() {
+		if __is_completed {
 			exit
 		}
 		
-		__is_finished = true
-		__on_finish(self)
+		__is_completed = true
+		__on_complete(self)
 	}
 }
 
-/// @func agenda_create(scope, handler, value)
-/// @param	{any}		scope	object instance or struct reference
+///
+///	Creates a new Agenda and executes the handler immediately. The handler function takes two arguments: create_todo and value.
+///	create_todo is a method which creates and returns a new Todo for this Agenda. Todos have one method called complete, which completes the Todo when called.
+///	After all created Todos have been completed, or if no Todos were created, the Agenda will be resolved. 
+///	value is the value passed into agenda_create, or the value returned by the Agenda this was chained into with the and_then method.
+///
+/// @param	{any}		scope	the scope to bind the handler to
 /// @param	{function}	handler handler function or method
-/// @param	{any}		[value]	optional value passed into handler
-/// @return	{struct}	agenda	the newly created agenda
+/// @param	{any}		[value]	optional value passed as an argument into the handler
+///
 function agenda_create(_scope, _handler, _value = undefined) {
 	var _agenda = new __Agenda(_scope, _handler)
 	_agenda.__handle(_value)
