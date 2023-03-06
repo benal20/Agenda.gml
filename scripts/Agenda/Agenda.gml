@@ -1,3 +1,4 @@
+
 /// feather ignore all
 
 function __Agenda(_target, _handler) constructor{
@@ -40,6 +41,11 @@ function __Agenda(_target, _handler) constructor{
 		return new __Todo(self)
 	}
 	
+	static __finish_todo = function() {
+		__todo_count --
+		__attempt_to_resolve()
+	}
+	
 	static __handle = function(_value) {
 		var _handler = method(__target, __handler)
 		__value = _handler(method(self, __create_todo), _value)
@@ -49,20 +55,16 @@ function __Agenda(_target, _handler) constructor{
 }
 
 function __Todo(_agenda) constructor{
-	agenda = _agenda
-	is_finished = false
+	__on_finish = method(_agenda, _agenda.__finish_todo)
+	__is_finished = false
 	
 	static finish = function() {
-		if is_finished {
+		if __is_finished {
 			exit
 		}
 		
-		is_finished = true
-		
-		with agenda {
-			__todo_count --
-			__attempt_to_resolve()
-		}
+		__is_finished = true
+		__on_finish()
 	}
 }
 
