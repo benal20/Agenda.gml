@@ -1,12 +1,12 @@
 
 /// feather ignore all
 
-function __Agenda(_target, _handler) constructor{
-	if !is_method(_handler) {
-		show_error("handler is not a method", true)
+function __Agenda(_scope, _handler) constructor{
+	if !is_callable(_handler) {
+		show_error("handler is not a method or function.", true)
 	}
 	
-	__target = _target
+	__scope = _scope
 	__handler = _handler
 	__todo_list = []
 	__locked = false
@@ -15,13 +15,17 @@ function __Agenda(_target, _handler) constructor{
 	__final_callback = undefined
 	
 	static and_then = function(_handler) {
-		__next_agenda = new __Agenda(__target, _handler)
+		__next_agenda = new __Agenda(__scope, _handler)
 		
 		return __next_agenda
 	}
 	
 	static and_finally = function(_callback) {
-		__final_callback = method(__target, _callback)
+		if !is_callable(_callback) {
+			show_error("and_finally callback is not a method or function.", true)
+		}
+	
+		__final_callback = method(__scope, _callback)
 	}
 	
 	static __attempt_to_resolve = function() {
@@ -57,7 +61,7 @@ function __Agenda(_target, _handler) constructor{
 	}
 	
 	static __handle = function(_value) {
-		var _handler = method(__target, __handler)
+		var _handler = method(__scope, __handler)
 		__value = _handler(method(self, __create_todo), _value)
 		__locked = true
 		__attempt_to_resolve()
@@ -78,13 +82,13 @@ function __Todo(_agenda) constructor{
 	}
 }
 
-/// @func agenda_create(target, handler, value)
-/// @param	{any}		target	target instance id or struct
-/// @param	{function}	handler handler method
-/// @param	{any}		[value]	optional value passed into the handler
+/// @func agenda_create(scope, handler, value)
+/// @param	{any}		scope	object instance or struct reference
+/// @param	{function}	handler handler function or method
+/// @param	{any}		[value]	optional value passed into handler
 /// @return	{struct}	agenda	the newly created agenda
-function agenda_create(_target, _handler, _value = undefined) {
-	var _agenda = new __Agenda(_target, _handler)
+function agenda_create(_scope, _handler, _value = undefined) {
+	var _agenda = new __Agenda(_scope, _handler)
 	_agenda.__handle(_value)
 	
 	return _agenda
