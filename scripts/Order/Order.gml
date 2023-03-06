@@ -1,4 +1,8 @@
 function __Order(_target, _handler) constructor{
+	if !is_method(_handler) {
+		show_error("handler is not a method", true)
+	}
+	
 	__target = _target
 	__handler = _handler
 	__next_order = undefined
