@@ -10,7 +10,7 @@ function __Agenda(_scope = {}, _handler) constructor{
 	__next_agenda = undefined
 	__final_callback = undefined
 	
-	/// @param	{function} handler function or method
+	/// @param {function} handler function or method
 	static and_then = function(_handler) {
 		__next_agenda = new __Agenda(__scope, _handler)
 		
@@ -76,7 +76,7 @@ function __Todo(_agenda) constructor{
 	}
 }
 
-///	Creates a new Agenda and executes its handler. Returns the newly created Agenda.
+/// Creates a new Agenda and executes its handler. Returns the newly created Agenda.
 /// @param	{any}		scope	the scope to bind the handler to
 /// @param	{function}	handler handler function or method
 /// @param	{any}		[value]	optional value passed as an argument into the handler
