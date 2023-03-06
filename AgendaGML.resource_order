@@ -1,15 +1,15 @@
 {
   "FolderOrderSettings": [
+    {"name":"AgendaGML","order":10,"path":"folders/AgendaGML.yy",},
+    {"name":"Example","order":1,"path":"folders/AgendaGML/Example.yy",},
+    {"name":"Rooms","order":1,"path":"folders/AgendaGML/Example/Rooms.yy",},
+    {"name":"Scripts","order":3,"path":"folders/AgendaGML/Example/Scripts.yy",},
+    {"name":"Sprites","order":2,"path":"folders/AgendaGML/Example/Sprites.yy",},
     {"name":"TweenGMX","order":4,"path":"folders/AgendaGML/Example/TweenGMX.yy",},
     {"name":"Admin","order":1,"path":"folders/AgendaGML/Example/TweenGMX/Admin.yy",},
     {"name":"Docs","order":2,"path":"folders/AgendaGML/Example/TweenGMX/Docs.yy",},
     {"name":"User","order":3,"path":"folders/AgendaGML/Example/TweenGMX/User.yy",},
     {"name":"Curves","order":1,"path":"folders/AgendaGML/Example/TweenGMX/User/Curves.yy",},
-    {"name":"AgendaGML","order":10,"path":"folders/AgendaGML.yy",},
-    {"name":"Sprites","order":2,"path":"folders/AgendaGML/Example/Sprites.yy",},
-    {"name":"Rooms","order":1,"path":"folders/AgendaGML/Example/Rooms.yy",},
-    {"name":"Example","order":1,"path":"folders/AgendaGML/Example.yy",},
-    {"name":"Scripts","order":3,"path":"folders/AgendaGML/Example/Scripts.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"TGMX_Terms_of_Use","order":1,"path":"notes/TGMX_Terms_of_Use/TGMX_Terms_of_Use.yy",},
