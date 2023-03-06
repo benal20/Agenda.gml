@@ -17,9 +17,7 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static __check = function() {
-		trace(todo_count, "todos remain")
 		if locked && todo_count == 0 {
-			trace("resolving order")
 			if callback {
 				callback(value)
 			}
@@ -38,7 +36,6 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static __handle = function(_value) {
-		trace("handling order")
 		var _handler = method(target, handler)
 		var _create_todo = function() {
 			return __create_todo()
@@ -54,7 +51,6 @@ function __Todo(_order) constructor{
 	is_finished = false
 	
 	static finish = function() {
-		trace(is_finished)
 		if is_finished {
 			exit
 		}
