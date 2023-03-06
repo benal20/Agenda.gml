@@ -1,1 +1,1 @@
-move(mouse_x, mouse_y)
+move_and_return(mouse_x, mouse_y)
