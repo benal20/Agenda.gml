@@ -4,7 +4,7 @@ function __Order(_target, _handler) constructor{
 	next_order = undefined
 	callback = undefined
 	value = undefined
-	todo_list = []
+	todo_count = 0
 	locked = false
 	
 	static and_then = function(_handler) {
@@ -17,8 +17,8 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static __check = function() {
-		trace(array_length(todo_list), "todos remain")
-		if locked && array_length(todo_list) == 0 {
+		trace(todo_count, "todos remain")
+		if locked && todo_count == 0 {
 			trace("resolving order")
 			if callback {
 				callback(value)
@@ -32,9 +32,9 @@ function __Order(_target, _handler) constructor{
 	static __create_todo = function() {
 		var _todo = new __Todo(self)
 		
-		array_push(todo_list, _todo)
+		todo_count ++
 		
-		return _todo.finish
+		return _todo
 	}
 	
 	static __handle = function(_value) {
@@ -53,32 +53,19 @@ function __Todo(_order) constructor{
 	order = _order
 	is_finished = false
 	
-	finish = function(_self = undefined) {
-		static __self = _self
+	static finish = function() {
+		trace(is_finished)
+		if is_finished {
+			exit
+		}
 		
-		with __self {
-			if is_finished || _self {
-				exit
-			}
+		is_finished = true
 		
-			is_finished = true
-		
-			with order {
-				for(var _i = 0; _i < array_length(todo_list); _i ++) {
-					var _todo = todo_list[_i]
-			
-					if _todo.is_finished {
-						array_delete(todo_list, _i, 1)
-						__check()
-				
-						break
-					}
-				}
-			}
+		with order {
+			todo_count --
+			__check()
 		}
 	}
-	
-	finish(self)
 }
 
 function order_create(_target, _handler, _value = undefined) {
