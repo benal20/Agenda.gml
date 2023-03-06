@@ -8,11 +8,11 @@ function __Agenda(_target, _handler) constructor{
 	
 	__target = _target
 	__handler = _handler
+	__todo_list = []
+	__locked = false
+	__value = undefined
 	__next_agenda = undefined
 	__final_callback = undefined
-	__value = undefined
-	__todo_count = 0
-	__locked = false
 	
 	static and_then = function(_handler) {
 		__next_agenda = new __Agenda(__target, _handler)
@@ -25,7 +25,7 @@ function __Agenda(_target, _handler) constructor{
 	}
 	
 	static __attempt_to_resolve = function() {
-		if __locked && __todo_count == 0 {
+		if __locked && array_length(__todo_list) == 0 {
 			if __final_callback {
 				__final_callback(__value)
 			}
@@ -36,13 +36,23 @@ function __Agenda(_target, _handler) constructor{
 	}
 	
 	static __create_todo = function() {
-		__todo_count ++
+		var _todo = new __Todo(self)
+		array_push(__todo_list, _todo)
 		
-		return new __Todo(self)
+		return _todo
 	}
 	
-	static __finish_todo = function() {
-		__todo_count --
+	static __finish_todo = function(_todo) {
+		if !_todo.__is_finished {
+			exit
+		}
+		
+		for(var _i = 0; _i < array_length(__todo_list); _i ++) {
+			if __todo_list[_i] == _todo {
+				array_delete(__todo_list, _i, 1)
+				break
+			}
+		}
 		__attempt_to_resolve()
 	}
 	
@@ -64,7 +74,7 @@ function __Todo(_agenda) constructor{
 		}
 		
 		__is_finished = true
-		__on_finish()
+		__on_finish(self)
 	}
 }
 
