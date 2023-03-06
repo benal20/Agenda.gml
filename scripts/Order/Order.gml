@@ -15,6 +15,7 @@ function __Order(_target, _handler) constructor{
 	
 	static and_then = function(_handler) {
 		__next_order = new __Order(__target, _handler)
+		
 		return __next_order
 	}
 	
@@ -22,7 +23,7 @@ function __Order(_target, _handler) constructor{
 		__final_callback = method(__target, _callback)
 	}
 	
-	static __check = function() {
+	static __attempt_to_resolve = function() {
 		if __locked && __todo_count == 0 {
 			if __final_callback {
 				__final_callback(__value)
@@ -35,7 +36,6 @@ function __Order(_target, _handler) constructor{
 	
 	static __create_todo = function() {
 		var _todo = new __Todo(self)
-		
 		__todo_count ++
 		
 		return _todo
@@ -43,12 +43,9 @@ function __Order(_target, _handler) constructor{
 	
 	static __handle = function(_value) {
 		var _handler = method(__target, __handler)
-		var _create_todo = function() {
-			return __create_todo()
-		}
-		__value = _handler(_create_todo, _value)
+		__value = _handler(method(self, __create_todo), _value)
 		__locked = true
-		__check()
+		__attempt_to_resolve()
 	}
 }
 
@@ -65,7 +62,7 @@ function __Todo(_order) constructor{
 		
 		with order {
 			__todo_count --
-			__check()
+			__attempt_to_resolve()
 		}
 	}
 }
@@ -78,5 +75,6 @@ function __Todo(_order) constructor{
 function order_create(_target, _handler, _value = undefined) {
 	var _order = new __Order(_target, _handler)
 	_order.__handle(_value)
+	
 	return _order
 }
