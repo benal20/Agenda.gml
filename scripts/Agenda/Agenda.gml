@@ -1,22 +1,22 @@
 /// feather ignore all
 
-function __Order(_target, _handler) constructor{
+function __Agenda(_target, _handler) constructor{
 	if !is_method(_handler) {
 		show_error("handler is not a method", true)
 	}
 	
 	__target = _target
 	__handler = _handler
-	__next_order = undefined
+	__next_agenda = undefined
 	__final_callback = undefined
 	__value = undefined
 	__todo_count = 0
 	__locked = false
 	
 	static and_then = function(_handler) {
-		__next_order = new __Order(__target, _handler)
+		__next_agenda = new __Agenda(__target, _handler)
 		
-		return __next_order
+		return __next_agenda
 	}
 	
 	static and_finally = function(_callback) {
@@ -28,8 +28,8 @@ function __Order(_target, _handler) constructor{
 			if __final_callback {
 				__final_callback(__value)
 			}
-			else if __next_order {
-				__next_order.__handle(__value)
+			else if __next_agenda {
+				__next_agenda.__handle(__value)
 			}
 		}
 	}
@@ -49,8 +49,8 @@ function __Order(_target, _handler) constructor{
 	}
 }
 
-function __Todo(_order) constructor{
-	order = _order
+function __Todo(_agenda) constructor{
+	agenda = _agenda
 	is_finished = false
 	
 	static finish = function() {
@@ -60,21 +60,21 @@ function __Todo(_order) constructor{
 		
 		is_finished = true
 		
-		with order {
+		with agenda {
 			__todo_count --
 			__attempt_to_resolve()
 		}
 	}
 }
 
-/// @func order_create(target, handler, value)
+/// @func agenda_create(target, handler, value)
 /// @param	{any}		target	target instance id or struct
 /// @param	{function}	handler handler method
 /// @param	{any}		[value]	optional value passed into the handler
-/// @return	{struct}	order	the newly created order
-function order_create(_target, _handler, _value = undefined) {
-	var _order = new __Order(_target, _handler)
-	_order.__handle(_value)
+/// @return	{struct}	agenda	the newly created agenda
+function agenda_create(_target, _handler, _value = undefined) {
+	var _agenda = new __Agenda(_target, _handler)
+	_agenda.__handle(_value)
 	
-	return _order
+	return _agenda
 }

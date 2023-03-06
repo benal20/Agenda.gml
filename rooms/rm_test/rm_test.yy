@@ -18,7 +18,7 @@
   ],
   "parent": {
     "name": "Rooms",
-    "path": "folders/OrderGMX/Example/Rooms.yy",
+    "path": "folders/AgendaGML/Example/Rooms.yy",
   },
   "parentRoom": null,
   "physicsSettings": {

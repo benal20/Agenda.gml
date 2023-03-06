@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "User",
-    "path": "folders/OrderGMX/Example/TweenGMX/User.yy",
+    "path": "folders/AgendaGML/Example/TweenGMX/User.yy",
   },
 }

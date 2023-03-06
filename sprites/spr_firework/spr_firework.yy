@@ -26,7 +26,7 @@
   "origin": 4,
   "parent": {
     "name": "Sprites",
-    "path": "folders/OrderGMX/Example/Sprites.yy",
+    "path": "folders/AgendaGML/Example/Sprites.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

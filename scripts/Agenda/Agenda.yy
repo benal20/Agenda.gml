@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "Order",
+  "name": "Agenda",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "OrderGMX",
-    "path": "folders/OrderGMX.yy",
+    "name": "AgendaGML",
+    "path": "folders/AgendaGML.yy",
   },
 }

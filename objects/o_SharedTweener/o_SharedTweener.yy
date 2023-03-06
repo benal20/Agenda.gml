@@ -15,7 +15,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Admin",
-    "path": "folders/OrderGMX/Example/TweenGMX/Admin.yy",
+    "path": "folders/AgendaGML/Example/TweenGMX/Admin.yy",
   },
   "parentObjectId": null,
   "persistent": true,

@@ -6,6 +6,6 @@
   "isDnD": false,
   "parent": {
     "name": "Scripts",
-    "path": "folders/OrderGMX/Example/Scripts.yy",
+    "path": "folders/AgendaGML/Example/Scripts.yy",
   },
 }

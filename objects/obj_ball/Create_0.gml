@@ -12,7 +12,7 @@ move = function(_x, _y) {
 		y: _y,
 	}
 	
-	order_create(self, function(_create_todo, _value) {
+	agenda_create(self, function(_create_todo, _value) {
 		var _tween = TweenFire(self, EaseOutQuad, TWEEN_MODE_ONCE, true, 0, random_range(0.8, 1.2), "x>", _value.x, "y>", _value.y)
 		var _todo = _create_todo()
 		TweenAddCallback(_tween, TWEEN_EV_FINISH, _todo, _todo.finish, _todo)
@@ -34,7 +34,6 @@ move = function(_x, _y) {
 			var _tween = TweenFire(_firework, EaseInBack, TWEEN_MODE_ONCE, true, 0, random_range(0.2, 0.4), "image_scale>", 0)
 			TweenDestroyWhenDone(_tween, true, true)
 		})
-		return true
 		
 	}).and_finally(function(_value) {
 		can_move = true

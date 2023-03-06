@@ -4,6 +4,6 @@
   "name": "TGMX_Update_Log",
   "parent": {
     "name": "Docs",
-    "path": "folders/OrderGMX/Example/TweenGMX/Docs.yy",
+    "path": "folders/AgendaGML/Example/TweenGMX/Docs.yy",
   },
 }
