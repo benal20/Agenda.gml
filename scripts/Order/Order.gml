@@ -2,7 +2,7 @@ function __Order(_target, _handler) constructor{
 	__target = _target
 	__handler = _handler
 	__next_order = undefined
-	__finally = undefined
+	__final_callback = undefined
 	__value = undefined
 	__todo_count = 0
 	__locked = false
@@ -13,13 +13,13 @@ function __Order(_target, _handler) constructor{
 	}
 	
 	static and_finally = function(_callback) {
-		__finally = method(__target, _callback)
+		__final_callback = method(__target, _callback)
 	}
 	
 	static __check = function() {
 		if __locked && __todo_count == 0 {
-			if __finally {
-				__finally(__value)
+			if __final_callback {
+				__final_callback(__value)
 			}
 			else if __next_order {
 				__next_order.__handle(__value)
@@ -62,10 +62,4 @@ function __Todo(_order) constructor{
 			__check()
 		}
 	}
-}
-
-function order_create(_target, _handler, _value = undefined) {
-	var _order = new __Order(_target, _handler)
-	_order.__handle(_value)
-	return _order
 }

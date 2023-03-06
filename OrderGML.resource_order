@@ -23,6 +23,7 @@
     {"name":"TGMX_0_MainTweens","order":2,"path":"scripts/TGMX_0_MainTweens/TGMX_0_MainTweens.yy",},
     {"name":"TGMX_8_SystemUtilities","order":10,"path":"scripts/TGMX_8_SystemUtilities/TGMX_8_SystemUtilities.yy",},
     {"name":"TGMX_5_TweenGetSet","order":7,"path":"scripts/TGMX_5_TweenGetSet/TGMX_5_TweenGetSet.yy",},
+    {"name":"order_create","order":3,"path":"scripts/order_create/order_create.yy",},
     {"name":"TGMX_2_EaseFunctions","order":4,"path":"scripts/TGMX_2_EaseFunctions/TGMX_2_EaseFunctions.yy",},
     {"name":"TGMX_3_EventCallbacks","order":5,"path":"scripts/TGMX_3_EventCallbacks/TGMX_3_EventCallbacks.yy",},
     {"name":"TGMX_6_TweenTools","order":8,"path":"scripts/TGMX_6_TweenTools/TGMX_6_TweenTools.yy",},
