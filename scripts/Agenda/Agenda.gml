@@ -35,10 +35,9 @@ function __Agenda(_target, _handler) constructor{
 	}
 	
 	static __create_todo = function() {
-		var _todo = new __Todo(self)
 		__todo_count ++
 		
-		return _todo
+		return new __Todo(self)
 	}
 	
 	static __handle = function(_value) {
