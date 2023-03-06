@@ -25,8 +25,8 @@
   "nineSlice": null,
   "origin": 4,
   "parent": {
-    "name": "OrderGML",
-    "path": "OrderGML.yyp",
+    "name": "Sprites",
+    "path": "folders/OrderGMX/Example/Sprites.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

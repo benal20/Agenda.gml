@@ -6,8 +6,8 @@
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "OrderGML",
-    "path": "OrderGML.yyp",
+    "name": "Objects",
+    "path": "folders/OrderGMX/Example/Objects.yy",
   },
   "parentObjectId": null,
   "persistent": false,

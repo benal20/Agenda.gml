@@ -1,1 +1,1 @@
-animate(mouse_x, mouse_y)
+move(mouse_x, mouse_y)

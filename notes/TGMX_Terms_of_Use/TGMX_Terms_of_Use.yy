@@ -4,6 +4,6 @@
   "name": "TGMX_Terms_of_Use",
   "parent": {
     "name": "Docs",
-    "path": "folders/TweenGMX/Docs.yy",
+    "path": "folders/OrderGMX/Example/TweenGMX/Docs.yy",
   },
 }

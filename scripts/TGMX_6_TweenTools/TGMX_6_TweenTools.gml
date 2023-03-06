@@ -5,6 +5,8 @@
 	or to delete the whole script entirely
 */
 
+var _; // USED FOR HIDING NON-FEATHER SYNTAX "ERRORS"
+
 /// @function TweensIncludeDeactivated( include? )
 /// @description Include tweens with deactivated targets? Used by Tweens() function. Default: false
 /// @param {Any} include
@@ -31,7 +33,7 @@ function TweenCalc(_t)
         
 	    EXAMPLES:
 	        // Create defined tween
-	        tween = TweenFire(id, EaseInOutQuint, 0, true, 0.0, 10, "", x, mouse_x);
+	        tween = TweenFire(self, EaseInOutQuint, 0, true, 0.0, 10, "", x, mouse_x);
         
 	        // Calculate value of tween at its current state
 	        x = TweenCalc(tween);
@@ -43,7 +45,7 @@ function TweenCalc(_t)
 			value = TweenCalc(tween, [5]);
 			
 			// Create multi-property tween --> Get array holding values for each calculated property
-			tweenXY = TweenFire(id, EaseOutQuad, 0, false, 0, 30, "", x, mouse_x, "", y, mouse_y);
+			tweenXY = TweenFire(self, EaseOutQuad, 0, false, 0, 30, "", x, mouse_x, "", y, mouse_y);
 			midPoints = TweenCalc(tweenXY, 0.5);
 			var _x = midPoints[0];
 			var _y = midPoints[1];
@@ -98,7 +100,7 @@ function TweenCalc(_t)
     
 	return _return;
 }
-var _ = TweenCalc; // HIDE SYNTAX ERROR
+_= TweenCalc; // HIDE SYNTAX ERROR
 
 /// @function TweenStep( tween, amount )
 /// @description Steps a paused tween forward or backward by a set amount
@@ -145,7 +147,7 @@ function TweenStep(_t, _amount=1)
 				}
 		        else // Tween has reached start or destination
 				{
-					_sharedTweener.TweenHasReachedBounds(_t, _target, _time, _timeScaleDelta);
+					TGMX_TweenHasReachedBounds(_t, _target, _time, _timeScaleDelta);
 				}
 			}
 			else

@@ -1,5 +1,6 @@
 // Feather ignore all
 
+// It is safe to delete this script
 
 /*	
 	TPTrack() targets the value of an instance or struct as a dynamic destination

@@ -32,7 +32,7 @@ function TweenFire()
     
 		Examples:                                  
 		    // Ease "x" value from (x) to (mouse_x), over 1 second
-		    TweenFire(id, EaseInQuad, TWEEN_MODE_ONCE, true, 0.0, 1.0, "x", x, mouse_x);
+		    TweenFire(self, EaseInQuad, TWEEN_MODE_ONCE, true, 0.0, 1.0, "x", x, mouse_x);
         
 		    // Ease "x" and "y" values from (x, y) to (mouse_x, mouse_y) over 60 steps with a 30 step delay.
 		    // Tween will play back and forth, repeatedly.
@@ -95,8 +95,8 @@ function TweenCreate()
 		You can set them to auto-destroy with TweenDestroyWhenDone(tween, true):
 	
 		Defining a tween at creation is optional. Both of the following are valid:
-			tween1 = TweenCreate(id);
-			tween2 = TweenCreate(id, EaseLinear, TWEEN_MODE_ONCE, true, 0, 1, "x", 0, 100);
+			tween1 = TweenCreate(self);
+			tween2 = TweenCreate(self, EaseLinear, TWEEN_MODE_ONCE, true, 0, 1, "x", 0, 100);
 		
 			TweenDestroyWhenDone(tween2, true); // Have tween auto-destroy when finished
 	*/
@@ -257,27 +257,32 @@ function TweenMore()
     
 	    Examples:
 	        // Chain various tweens to fire one after another
-			tween1 = TweenFire(id, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
-			tween2 = TweenMore(tween1, id, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
-			tween3 = TweenMore(tween2, id, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
-			tween4 = TweenMore(tween3, id, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
+			tween1 = TweenFire(self, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
+			tween2 = TweenMore(tween1, self, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
+			tween3 = TweenMore(tween2, self, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
+			tween4 = TweenMore(tween3, self, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
 		
-			t = TweenFire(id, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
-			TweenMore(t, id, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
-			TweenMore(t+1, id, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
-			TweenMore(t+2, id, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
+			t = TweenFire(self, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
+			TweenMore(t, self, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
+			TweenMore(t+1, self, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
+			TweenMore(t+2, self, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
 		
 			// 0 can be used to refer to the last created tween
-			TweenFire(id, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
-			TweenMore(0, id, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
-			TweenMore(0, id, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
-			TweenMore(0, id, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
+			TweenFire(self, EaseOutBounce, 0, true, 0, 1.0, "y", -100, y);
+			TweenMore(0, self, EaseInOutQuad, 0, true, 0, 0.5, "image_yscale", 1, 0.25);
+			TweenMore(0, self, EaseInOutSine, 0, true, 0, 1.0, "image_angle", 0, 360);
+			TweenMore(0, self, EaseInOutQuad, 0, true, 0, 2.0, "image_xscale", 1, 0.5);
 	*/
 	
 	// MAKE SURE TWEENER HAS BEEN CREATED AT LEAST ONCE
 	static _ = SharedTweener();
 	
 	var _args;
+	
+	if (argument[0] == TWEEN_NULL)
+	{
+		return TWEEN_NULL;	
+	}
 
 	if (is_string(argument[1]))
 	{
@@ -404,6 +409,11 @@ function TweenMoreScript()
 	// MAKE SURE TWEENER HAS BEEN CREATED AT LEAST ONCE
 	static _ = SharedTweener();
 
+	if (argument[0] == TWEEN_NULL)
+	{
+		return TWEEN_NULL;	
+	}
+
 	var _newTween;
 	var _ogTween = TGMX_FetchTween(argument[0]); // Note: This needs to be first inorder to support [0] relevant tween ids
 	var _args = array_create(argument_count-1);
@@ -460,7 +470,7 @@ function TweenMoreScript()
 function TweenDefine() 
 {	
 	/*
-		tween = TweenCreate(id);
+		tween = TweenCreate(self);
 		TweenDefine(tween, "io", "once", true, 0, 1, "x", 0, 100); 
 	*/
 	

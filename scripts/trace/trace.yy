@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "OrderGML",
-    "path": "OrderGML.yyp",
+    "name": "Scripts",
+    "path": "folders/OrderGMX/Example/Scripts.yy",
   },
 }

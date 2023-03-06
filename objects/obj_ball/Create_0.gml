@@ -1,13 +1,16 @@
-can_animate = true
+can_move = true
 
-animate = function(_x, _y) {
-	if !can_animate {
+move = function(_x, _y) {
+	if !can_move {
 		exit
 	}
 	
-	can_animate = false
+	can_move = false
 	
-	var _value = { x: _x, y: _y}
+	var _value = {
+		x: _x,
+		y: _y,
+	}
 	
 	order_create(self, function(_create_todo, _value) {
 		var _tween = TweenFire(self, EaseOutQuad, TWEEN_MODE_ONCE, true, 0, random_range(0.8, 1.2), "x>", _value.x, "y>", _value.y)
@@ -34,6 +37,6 @@ animate = function(_x, _y) {
 		return true
 		
 	}).and_finally(function(_value) {
-		can_animate = true
+		can_move = true
 	})
 }

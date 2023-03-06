@@ -75,23 +75,21 @@ if (isEnabled)
 				// DON'T PROCESS TWEEN IF TARGET DOESN'T EXIST -- COMPILER WILL STRIP OUT UNUSED SETTINGS
 				if (TGMX_USE_TARGETS == TGMX_TARGETS_INSTANCE) // FORCE ONLY INSTANCE TARGET SUPPORT
 				{
-					if (!instance_exists(_target)) { continue; } // CONTINUE LOOP IF INSTANCE TARGET DOESN'T EXIST
+					if (instance_exists(_target)) {} else { continue; } // CONTINUE LOOP IF INSTANCE TARGET DOESN'T EXIST
 				}
 				if (TGMX_USE_TARGETS == TGMX_TARGETS_STRUCT) // FORCE ONLY STRUCT TARGET SUPPORT
 				{
-					if (!weak_ref_alive(_target)) { continue; } // CONTINUE LOOP IF STRUCT TARGET DOESN'T EXIST
-					_target = _target.ref; // GET STRUCT REFERENCE
+					if (weak_ref_alive(_target)) { _target = _target.ref; } else { continue; } // CONTINUE LOOP IF STRUCT TARGET DOESN'T EXIST
 				}
 				if (TGMX_USE_TARGETS == TGMX_TARGETS_DYNAMIC) // USE DYNAMIC INSTANCE/STRUCT TARGET SUPPORT
 				{
 					if (is_struct(_target)) // IF STRUCT TARGET
 					{
-						if (!weak_ref_alive(_target)) { continue; } // CONTINUE LOOP IF STRUCT TARGET DOESN'T EXIST
-						_target = _target.ref; // GET STRUCT REFERENCE
+						if (weak_ref_alive(_target)) { _target = _target.ref; } else { continue; } // CONTINUE LOOP IF STRUCT TARGET DOESN'T EXIST
 					}
 					else
 					{
-						if (!instance_exists(_target)) { continue; } // CONTINUE LOOP IF INSTANCE TARGET DOESN'T EXIST
+						if (instance_exists(_target)) {} else { continue; } // CONTINUE LOOP IF INSTANCE TARGET DOESN'T EXIST
 					}
 				}
 
@@ -241,7 +239,7 @@ if (isEnabled)
 				}
                 else // Tween has reached start or destination
 				{
-					TweenHasReachedBounds(_t, _target, _time, _timeScaleDelta);
+					TGMX_TweenHasReachedBounds(_t, _target, _time, _timeScaleDelta);
 				}
             }
 			

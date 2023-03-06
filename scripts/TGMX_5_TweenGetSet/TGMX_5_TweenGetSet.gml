@@ -109,9 +109,10 @@ function TweenGet(_t, _data_label)
 	        "destination"    -- Destination value of the property or properties
 	        "property"       -- Property or properties effected by the tween
 			"continue_count" -- Number of times play mode is to continue
+			"caller"		 -- The environment which called the tween
         
 	        e.g.
-	            tween = TweenFire(id, EaseLinear, 0, true, 0, 1, "x", 0, 100);
+	            tween = TweenFire(self, EaseLinear, 0, true, 0, 1, "x", 0, 100);
 	            duration = TweenGet(tween, "duration");
             
 	    ***	WARNING *** The following labels return multiple values as an array for multi-property tweens:
@@ -121,7 +122,7 @@ function TweenGet(_t, _data_label)
 				"property"
         
 	        e.g.
-	            tween = TweenFire(id, EaseLinear, 0, true, 0, 1, "x", 0, 100, "y", 0, 100);
+	            tween = TweenFire(self, EaseLinear, 0, true, 0, 1, "x", 0, 100, "y", 0, 100);
 	            startValues = TweenGet(tween, "start");
 	            xStart = startValues[0];
 	            yStart = startValues[1];
@@ -333,7 +334,7 @@ function TweenSet(_t, _data_label)
 			"continue_count"	-- Number of times play mode is to continue
         
 	        e.g.
-	            tween = Tween(id, EaseLinear, 0, true, 0, 1, "x", 0, 100);
+	            tween = Tween(self, EaseLinear, 0, true, 0, 1, "x", 0, 100);
 	            TweenSet(tween, "duration", 2.5);
             
 	    The following labels can update multiple properties by supplying
@@ -346,7 +347,7 @@ function TweenSet(_t, _data_label)
 			"raw_destination"
         
 	        e.g.
-	            tween = Tween(id, EaseLinear, 0, true, 0, 1, "x", 0, 100, "y", 0, 100); // multi-property tween (x/y)
+	            tween = Tween(self, EaseLinear, 0, true, 0, 1, "x", 0, 100, "y", 0, 100); // multi-property tween (x/y)
 	            TweenSet(tween, "start", [mouse_x, mouse_y]); // update to x/y mouse coordinates
            
 	    The keyword [undefined] can be used to leave a property value unchanged
@@ -379,7 +380,7 @@ function TweenSet(_t, _data_label)
 						
 						if (_setValue == undefined)
 						{
-							show_error("TweenGMS: Invalid ease type used in TweenSet()", false);	
+							show_error("TweenGMX: Invalid ease type used in TweenSet()", false);	
 						}
 					}
 					else
@@ -389,7 +390,7 @@ function TweenSet(_t, _data_label)
 						
 						if (_setValue == undefined)
 						{
-							show_error("TweenGMS: Invalid play mode used in TweenSet()", false);	
+							show_error("TweenGMX: Invalid play mode used in TweenSet()", false);	
 						}
 					}
 					else
@@ -399,7 +400,7 @@ function TweenSet(_t, _data_label)
 				}
 				else
 				{
-					show_error("TweenGMS: Invalid label used with TweenSet()", false);
+					show_error("TweenGMX: Invalid label used with TweenSet()", false);
 				}
 			}
 		}

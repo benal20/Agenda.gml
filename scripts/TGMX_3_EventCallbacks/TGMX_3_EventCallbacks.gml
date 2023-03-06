@@ -176,7 +176,7 @@ function TweenCallbackInvalidate(_callback)
 	/*      
 	    Example:
 	        // Create tween and add callback to finish event
-	        tween = TweenCreate(id);
+	        tween = TweenCreate(self);
 	        cb = TweenEventAddCallback(tween, TWEEN_EV_FINISH, id, ShowMessage, "Finished!");
         
 	        // Invalidate callback -- effectively removes it from tween event
