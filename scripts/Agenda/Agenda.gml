@@ -23,7 +23,7 @@ function __Agenda(_scope = {}, _handler) constructor{
 		return _todo
 	}
 	
-	/// Chains a new Agenda onto a previously created one. Cannot be called within the handler.
+	/// Creates and returns a new Agenda to be handled after the current Agenda is resolved. Cannot be called within the handler.
 	/// @param {function} handler function or method
 	static and_then = function(_handler) {
 		if __is_handling {
@@ -35,7 +35,7 @@ function __Agenda(_scope = {}, _handler) constructor{
 		return __next_agenda
 	}
 	
-	/// Chains a final callback onto a previously created Agenda. Cannot be called within the handler.
+	/// Creates a callback to be handled after the current Agenda is resolved. Cannot be called within the handler.
 	/// @param {function} callback function or method
 	static and_finally = function(_callback) {
 		if __is_handling {
