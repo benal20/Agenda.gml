@@ -44,7 +44,6 @@
     {"id":{"name":"trace","path":"scripts/trace/trace.yy",},"order":0,},
     {"id":{"name":"TGMX_8_SystemUtilities","path":"scripts/TGMX_8_SystemUtilities/TGMX_8_SystemUtilities.yy",},"order":10,},
     {"id":{"name":"TGMX_5_TweenGetSet","path":"scripts/TGMX_5_TweenGetSet/TGMX_5_TweenGetSet.yy",},"order":7,},
-    {"id":{"name":"order_create","path":"scripts/order_create/order_create.yy",},"order":3,},
     {"id":{"name":"o_SharedTweener","path":"objects/o_SharedTweener/o_SharedTweener.yy",},"order":0,},
     {"id":{"name":"TGMX_2_EaseFunctions","path":"scripts/TGMX_2_EaseFunctions/TGMX_2_EaseFunctions.yy",},"order":4,},
     {"id":{"name":"TGMX_3_EventCallbacks","path":"scripts/TGMX_3_EventCallbacks/TGMX_3_EventCallbacks.yy",},"order":5,},
