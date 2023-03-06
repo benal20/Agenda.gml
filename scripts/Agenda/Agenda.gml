@@ -76,16 +76,10 @@ function __Todo(_agenda) constructor{
 	}
 }
 
-///
-///	Creates a new Agenda and executes the handler immediately. The handler function takes two arguments: create_todo and value.
-///	create_todo is a method which creates and returns a new Todo for this Agenda. Todos have one method called complete, which completes the Todo when called.
-///	After all created Todos have been completed, or if no Todos were created, the Agenda will be resolved. 
-///	value is the value passed into agenda_create, or the value returned by the Agenda this was chained into with the and_then method.
-///
+///	Creates a new Agenda and executes its handler. Returns the newly created Agenda.
 /// @param	{any}		scope	the scope to bind the handler to
 /// @param	{function}	handler handler function or method
 /// @param	{any}		[value]	optional value passed as an argument into the handler
-///
 function agenda_create(_scope, _handler, _value = undefined) {
 	var _agenda = new __Agenda(_scope, _handler)
 	_agenda.__handle(_value)

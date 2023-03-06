@@ -1,1 +1,1 @@
-todo.finish()
+todo.complete()

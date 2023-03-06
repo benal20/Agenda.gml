@@ -2,7 +2,17 @@ can_move = true
 goal = { x: 0, y: 0 }
 callback = undefined
 
-move = function(_x, _y) {
+move = function(_x, _y, _speed, _todo) {
+	direction = point_direction(x, y, _x, _y)
+	speed = _speed
+	goal = { x: _x, y: _y }
+	
+	callback = method(_todo, function() {
+		complete()
+	})
+}
+
+move_and_return = function(_x, _y) {
 	if !can_move {
 		exit
 	}
@@ -10,26 +20,29 @@ move = function(_x, _y) {
 	can_move = false
 	
 	var _value = { x: _x, y: _y }
-	
 	agenda_create(self, function(_create_todo, _value) {
-		direction = point_direction(x, y, _value.x, _value.y)
-		speed = random_range(5, 8)
-		goal = _value
+		var _speed = 8
+		move(_value.x, _value.y, _speed, _create_todo())
 		
-		var _todo = _create_todo()
-		callback = method(_todo, function() {
-			complete()
-		})
-		
-		return irandom_range(5, 10)
+		return {
+			x: x,
+			y: y,
+			speed: _speed,
+		}
 		
 	}, _value).and_then(function(_create_todo, _value) {
 		var _fireworks = []
-		for(var _i = 0; _i < _value; _i ++) {
+		for(var _i = 0; _i < irandom_range(6, 12); _i ++) {
 			var _firework = instance_create_depth(x, y, depth - 1, obj_firework, {
-				todo: _create_todo()
+				todo: _create_todo(),
 			})
 		}
+		
+		return _value
+		
+	}).and_then(function(_create_todo, _value) {
+		move(_value.x, _value.y, _value.speed, _create_todo())
+		
 	}).and_finally(function(_value) {
 		can_move = true
 	})
