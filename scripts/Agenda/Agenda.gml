@@ -8,7 +8,6 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	__todo_list = []
 	__is_handling = false
 	__is_handled = false
-	__is_canceled = false
 	__is_resolved = false
 	__value = undefined
 	__next_agenda = undefined
@@ -26,13 +25,18 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		return _todo
 	}
 	
-	/// Cancels the Agenda, preventing it from chaining any further.
-	static cancel = function() {
+	/// Cancels the Agenda, preventing it from chaining any further. Must be called within the handler function.
+	/// @param {bool} do_complete_source_todo if true, and if one exists, completes the defined source_todo
+	static cancel = function(_do_complete_source_todo = false) {
 		if !__is_handling {
 			show_error("Agenda Error: Agendas cannot be canceled outside of the handler!", true)
 		}
 		
-		__is_canceled = true
+		if _do_complete_source_todo && __source_todo {
+			__source_todo.complete()
+		}
+		
+		__is_resolved = true
 	}
 	
 	/// Creates and returns a new Agenda to be handled after the current Agenda is resolved.
@@ -63,14 +67,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		__attempt_to_resolve()
 	}
 	
-	static __attempt_to_resolve = function() {
-		if __is_canceled {
-			if __source_todo {
-				__source_todo.complete()
-			}
-			__is_resolved = true
-		}
-		
+	static __attempt_to_resolve = function() {		
 		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
 			if __finally_callback {
 				__finally_callback(__value)
@@ -135,9 +132,9 @@ function __Todo(_agenda) constructor{
 }
 
 /// Creates a new Agenda and executes its handler. Returns the newly created Agenda.
-/// @param	{any}		scope	the scope to bind the handler to
-/// @param	{function}	handler handler function or method
-/// @param	{any}		[value]	optional value passed as an argument into the handler
+/// @param {any}		scope	the scope to bind the handler to
+/// @param {function}	handler handler function or method
+/// @param {any}		[value]	optional value passed as an argument into the handler
 function agenda_create(_scope, _handler, _value = undefined) {
 	var _agenda = new __Agenda(_scope, _handler)
 	_agenda.__handle(_value)
