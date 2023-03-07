@@ -5,8 +5,9 @@ function __Agenda(_scope = {}, _handler) constructor{
 	__scope = _scope
 	__handler = _handler
 	__todo_list = []
-	__is_handled = false
 	__is_handling = false
+	__is_handled = false
+	__is_canceled = false
 	__value = undefined
 	__next_agenda = undefined
 	__final_callback = undefined
@@ -21,6 +22,15 @@ function __Agenda(_scope = {}, _handler) constructor{
 		array_push(__todo_list, _todo)
 		
 		return _todo
+	}
+	
+	/// Cancels the Agenda, preventing it from chaining any further.
+	static cancel = function() {
+		if !__is_handling {
+			show_error("Agenda Error: Agendas cannot be canceled outside of the handler!", true)
+		}
+		
+		__is_canceled = true
 	}
 	
 	/// Creates and returns a new Agenda to be handled after the current Agenda is resolved. Cannot be called within the handler.
@@ -47,6 +57,10 @@ function __Agenda(_scope = {}, _handler) constructor{
 	
 	static __attempt_to_resolve = function() {
 		if __is_handled && array_length(__todo_list) == 0 {
+			if __is_canceled {
+				exit
+			}
+			
 			if __final_callback {
 				__final_callback(__value)
 			}
