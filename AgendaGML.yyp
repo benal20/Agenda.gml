@@ -15,7 +15,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Example","folderPath":"folders/AgendaGML/Example.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/AgendaGML/Example/Objects.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Rooms","folderPath":"folders/AgendaGML/Example/Rooms.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Sprites","folderPath":"folders/AgendaGML/Example/Sprites.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
@@ -24,11 +23,9 @@
     "IDEVersion": "2023.2.0.71",
   },
   "resources": [
-    {"id":{"name":"spr_ball","path":"sprites/spr_ball/spr_ball.yy",},},
-    {"id":{"name":"obj_ball","path":"objects/obj_ball/obj_ball.yy",},},
-    {"id":{"name":"spr_firework","path":"sprites/spr_firework/spr_firework.yy",},},
+    {"id":{"name":"obj_test_ball","path":"objects/obj_test_ball/obj_test_ball.yy",},},
     {"id":{"name":"Agenda","path":"scripts/Agenda/Agenda.yy",},},
-    {"id":{"name":"obj_firework","path":"objects/obj_firework/obj_firework.yy",},},
+    {"id":{"name":"obj_test_firework","path":"objects/obj_test_firework/obj_test_firework.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "RoomOrderNodes": [

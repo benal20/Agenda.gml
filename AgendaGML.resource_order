@@ -3,11 +3,9 @@
     {"name":"AgendaGML","order":10,"path":"folders/AgendaGML.yy",},
     {"name":"Example","order":1,"path":"folders/AgendaGML/Example.yy",},
     {"name":"Rooms","order":1,"path":"folders/AgendaGML/Example/Rooms.yy",},
-    {"name":"Sprites","order":2,"path":"folders/AgendaGML/Example/Sprites.yy",},
   ],
   "ResourceOrderSettings": [
-    {"name":"spr_firework","order":1,"path":"sprites/spr_firework/spr_firework.yy",},
     {"name":"Agenda","order":2,"path":"scripts/Agenda/Agenda.yy",},
-    {"name":"obj_firework","order":1,"path":"objects/obj_firework/obj_firework.yy",},
+    {"name":"obj_test_firework","order":1,"path":"objects/obj_test_firework/obj_test_firework.yy",},
   ],
 }

@@ -29,19 +29,22 @@ move_and_return = function(_x, _y) {
 			y: y,
 			speed: _speed,
 		}
-		
-	}, _value).and_then(function(_agenda, _value) {
+	}, _value)
+	
+	.and_then(function(_agenda, _value) {
 		var _fireworks = []
 		for(var _i = 0; _i < irandom_range(6, 12); _i ++) {
-			var _firework = instance_create_depth(x, y, depth - 1, obj_firework, {
+			var _firework = instance_create_depth(x, y, depth - 1, obj_test_firework, {
 				todo: _agenda.create_todo(),
 			})
 		}
-		
-	}).and_then(function(_agenda, _value) {
+	})
+	
+	.and_then(function(_agenda, _value) {
 		move(_value.x, _value.y, _value.speed, _agenda.create_todo())
-		
-	}).and_finally(function(_value) {
+	})
+	
+	.and_finally(function(_value) {
 		can_move = true
 	})
 }
