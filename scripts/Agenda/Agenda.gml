@@ -12,7 +12,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 	__is_resolved = false
 	__value = undefined
 	__next_agenda = undefined
-	__final_callback = undefined
+	__finally_callback = undefined
 	
 	/// Creates and returns a new Todo. Must be called within the handler function.
 	static create_todo = function() {
@@ -56,41 +56,32 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 		}
 		
 		if __todo {
-			show_error("Agenda Error: and_finally cannot be used if the Agenda was created from a Todo. Use and_complete instead.", true)
+			show_error("Agenda Error: and_finally cannot be used if the Agenda was created from a Todo.", true)
 		}
 		
-		__final_callback = method(__scope, _callback)
-		__attempt_to_resolve()
-	}
-	
-	/// Completes the Todo after the current Agenda is resolved.
-	static and_complete = function() {
-		if __is_handling {
-			show_error("Agenda Error: and_complete cannot be called within the handler!", true)
-		}
-		
-		if !__todo {
-			show_error("Agenda Error: and_complete can only be called off of an Agenda originally created from a Todo. Use and_finally instead.", true)
-		}
-		
-		__final_callback = method(__todo, function() {
-			complete()
-		})
+		__finally_callback = method(__scope, _callback)
 		__attempt_to_resolve()
 	}
 	
 	static __attempt_to_resolve = function() {
-		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
-			if __is_canceled {
-				__final_callback()
-				__is_resolved = true
+		if __is_canceled {
+			if __todo {
+				__todo.complete()
 			}
-			else if __final_callback {
-				__final_callback(__value)
+			__is_resolved = true
+		}
+		
+		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
+			if __finally_callback {
+				__finally_callback(__value)
 				__is_resolved = true
 			}
 			else if __next_agenda {
 				__next_agenda.__handle(__value)
+				__is_resolved = true
+			}
+			else if __todo {
+				__todo.complete()
 				__is_resolved = true
 			}
 		}
