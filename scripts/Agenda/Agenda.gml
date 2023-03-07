@@ -1,10 +1,10 @@
 
 /// feather ignore all
 
-function __Agenda(_scope, _handler, _todo = undefined) constructor{
+function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	__scope = _scope
 	__handler = _handler
-	__todo = _todo
+	__source_todo = _source_todo
 	__todo_list = []
 	__is_handling = false
 	__is_handled = false
@@ -42,7 +42,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 			show_error("Agenda Error: and_then cannot be called within the handler!", true)
 		}
 		
-		__next_agenda = new __Agenda(__scope, _handler, __todo)
+		__next_agenda = new __Agenda(__scope, _handler, __source_todo)
 		__attempt_to_resolve()
 		
 		return __next_agenda
@@ -55,7 +55,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 			show_error("Agenda Error: and_finally cannot be called within the handler!", true)
 		}
 		
-		if __todo {
+		if __source_todo {
 			show_error("Agenda Error: and_finally cannot be used if the Agenda was created from a Todo.", true)
 		}
 		
@@ -65,8 +65,8 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 	
 	static __attempt_to_resolve = function() {
 		if __is_canceled {
-			if __todo {
-				__todo.complete()
+			if __source_todo {
+				__source_todo.complete()
 			}
 			__is_resolved = true
 		}
@@ -80,8 +80,8 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 				__next_agenda.__handle(__value)
 				__is_resolved = true
 			}
-			else if __todo {
-				__todo.complete()
+			else if __source_todo {
+				__source_todo.complete()
 				__is_resolved = true
 			}
 		}
