@@ -78,7 +78,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 	static __attempt_to_resolve = function() {
 		if __is_handled && array_length(__todo_list) == 0 {
 			if __is_canceled {
-				and_complete()
+				__final_callback()
 			}
 			else if __final_callback {
 				__final_callback(__value)
