@@ -38,8 +38,6 @@ move_and_return = function(_x, _y) {
 			})
 		}
 		
-		return _value
-		
 	}).and_then(function(_agenda, _value) {
 		move(_value.x, _value.y, _value.speed, _agenda.create_todo())
 		

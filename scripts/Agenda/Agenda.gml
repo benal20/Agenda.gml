@@ -73,7 +73,7 @@ function __Agenda(_scope = {}, _handler) constructor{
 	static __handle = function(_value) {
 		var _handler = method(__scope, __handler)
 		__is_handling = true
-		__value = _handler(self, _value)
+		__value = _handler(self, _value) ?? _value
 		__is_handling = false
 		__is_handled = true
 		__attempt_to_resolve()
