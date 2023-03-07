@@ -9,6 +9,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 	__is_handling = false
 	__is_handled = false
 	__is_canceled = false
+	__is_resolved = false
 	__value = undefined
 	__next_agenda = undefined
 	__final_callback = undefined
@@ -42,6 +43,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 		}
 		
 		__next_agenda = new __Agenda(__scope, _handler, __todo)
+		__attempt_to_resolve()
 		
 		return __next_agenda
 	}
@@ -58,6 +60,7 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 		}
 		
 		__final_callback = method(__scope, _callback)
+		__attempt_to_resolve()
 	}
 	
 	/// Completes the Todo after the current Agenda is resolved.
@@ -73,18 +76,22 @@ function __Agenda(_scope, _handler, _todo = undefined) constructor{
 		__final_callback = method(__todo, function() {
 			complete()
 		})
+		__attempt_to_resolve()
 	}
 	
 	static __attempt_to_resolve = function() {
-		if __is_handled && array_length(__todo_list) == 0 {
+		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
 			if __is_canceled {
 				__final_callback()
+				__is_resolved = true
 			}
 			else if __final_callback {
 				__final_callback(__value)
+				__is_resolved = true
 			}
 			else if __next_agenda {
 				__next_agenda.__handle(__value)
+				__is_resolved = true
 			}
 		}
 	}
