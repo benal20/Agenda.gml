@@ -16,7 +16,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// Creates and returns a new Todo. Must be called within the handler function.
 	static create_todo = function() {
 		if !__is_handling {
-			show_error("Agenda Error: Todos cannot be created outside of the handler!", true)
+			show_error("Agenda Error: Todos cannot be created outside of the handler.", true)
 		}
 		
 		var _todo = new __Todo(self)
@@ -29,7 +29,11 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// @param {bool} do_complete_source_todo if true, and if one exists, completes the defined source_todo
 	static cancel = function(_do_complete_source_todo = false) {
 		if !__is_handling {
-			show_error("Agenda Error: Agendas cannot be canceled outside of the handler!", true)
+			show_error("Agenda Error: Agendas cannot be canceled outside of the handler.", true)
+		}
+		
+		if __finally_callback {
+			show_error("Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called!", true)
 		}
 		
 		if _do_complete_source_todo && __source_todo {
@@ -43,7 +47,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// @param {function} handler function or method
 	static and_then = function(_handler) {
 		if __is_handling {
-			show_error("Agenda Error: and_then cannot be called within the handler!", true)
+			show_error("Agenda Error: and_then cannot be called within the handler.", true)
 		}
 		
 		__next_agenda = new __Agenda(__scope, _handler, __source_todo)
@@ -52,15 +56,15 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		return __next_agenda
 	}
 	
-	/// Creates a callback to be executed after the current Agenda is resolved.
+	/// Assigns a final callback to be executed after the current Agenda is resolved.
 	/// @param {function} callback function or method
 	static and_finally = function(_callback) {
 		if __is_handling {
-			show_error("Agenda Error: and_finally cannot be called within the handler!", true)
+			show_error("Agenda Error: and_finally cannot be called within the handler.", true)
 		}
 		
-		if __source_todo {
-			show_error("Agenda Error: and_finally cannot be used if the Agenda was created from a Todo.", true)
+		if __next_agenda {
+			show_error("Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called!", true)
 		}
 		
 		__finally_callback = method(__scope, _callback)
@@ -71,6 +75,9 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
 			if __finally_callback {
 				__finally_callback(__value)
+				if __source_todo {
+					__source_todo.complete()
+				}
 				__is_resolved = true
 			}
 			else if __next_agenda {
