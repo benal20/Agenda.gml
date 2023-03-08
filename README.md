@@ -21,7 +21,15 @@ agenda_create(self, function(agenda, value) {
 })
 ```
 You can create new Todos within the handler function using the `create_todo()` method.
-
+<br> Any number of Todos can be created within an Agenda.
+```js
+agenda_create(self, function(agenda, value) {
+  for(var i = 0; i < 10; i ++) {
+    var todo = agenda.create_todo()
+    fire_projectile(obj_fireball, todo)
+  }
+})
+```
 ___
 
 ### Resolving Agendas
@@ -70,7 +78,7 @@ agenda_create(self, function(agenda, animation_name) {
   do_animation(animation_name, agenda.create_todo())
 }, "attack_start")
 ```
-This value, or undefined if one wasn't defined, will be passed into the next Agenda or final callback in the chain.
+This value will be passed into the next Agenda or final callback in the chain.
 ```js
 agenda_create(self, function(agenda, victim_instance) {
   do_animation("attack_start", agenda.create_todo())
@@ -96,7 +104,7 @@ ___
 
 ### Creating Agendas from Todos
 
-Agendas can be created from a Todo with the `agenda(scope, handler, [value]` method. 
+Agendas can be created from Todos with the `agenda(scope, handler, [value])` method. 
 ```js
 static do_animation = function(animation_name, todo) {
   todo.agenda(self, function(agenda, animation_name) {
@@ -112,8 +120,7 @@ agenda_create(self, function(agenda, value) {
   finished_animating = true
 })
 ```
-When the chain is finished, the Todo will call `complete` automatically. 
-<br>`and_finally` can be used, like in the above example, but is not required.
+When the chain is finished, whether there is an `and_finally` callback or not, the Todo will call `complete` on itself automatically.
 
 ___
 
@@ -136,3 +143,4 @@ agenda_create(self, function(agenda, value) {
 })
 ```
 If the Agenda was created from a Todo, you may optionally pass `true` into `cancel` to complete the source Todo immediately.
+<br>Otherwise, the Todo will not be completed automatically.
