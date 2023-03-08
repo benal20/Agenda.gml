@@ -32,10 +32,6 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 			show_error("Agenda Error: Agendas cannot be canceled outside of the handler.", true)
 		}
 		
-		if __finally_callback {
-			show_error("Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called!", true)
-		}
-		
 		if _do_complete_source_todo && __source_todo {
 			__source_todo.complete()
 		}
@@ -48,6 +44,10 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	static and_then = function(_handler) {
 		if __is_handling {
 			show_error("Agenda Error: and_then cannot be called within the handler.", true)
+		}
+		
+		if __finally_callback {
+			show_error("Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called.", true)
 		}
 		
 		__next_agenda = new __Agenda(__scope, _handler, __source_todo)
@@ -64,7 +64,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		}
 		
 		if __next_agenda {
-			show_error("Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called!", true)
+			show_error("Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called.", true)
 		}
 		
 		__finally_callback = method(__scope, _callback)
