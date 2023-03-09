@@ -1,12 +1,12 @@
 # What are Agendas?
 
-Agendas can be used to schedule callbacks which need to execute in a specific order, but not all at the same time.
+An Agenda is a struct that allows you to schedule and delay the execution of callbacks until after pre-requisites called Todos have been completed. Agendas can be chained off of each other, making them especially useful for multi-stage animation systems.
 
 Agendas have 3 main components:
 
 - **Resolution** - What happens when the Agenda is resolved.
 - **Todos** - Structs that need to be completed in order for the Agenda to be resolved.
-- **Handler** - A method for creating Todos to add to the Agenda.
+- **Handler** - A method for creating Todos within an Agenda.
 
 # Using Agendas
 
