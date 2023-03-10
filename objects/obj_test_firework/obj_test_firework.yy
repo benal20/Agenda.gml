@@ -12,7 +12,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Objects",
-    "path": "folders/AgendaGML/Example/Objects.yy",
+    "path": "folders/AgendaGML/Example Project/Objects.yy",
   },
   "parentObjectId": null,
   "persistent": false,

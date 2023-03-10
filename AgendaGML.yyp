@@ -12,9 +12,11 @@
   "defaultScriptType": 1,
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"AgendaGML","folderPath":"folders/AgendaGML.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Example","folderPath":"folders/AgendaGML/Example.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/AgendaGML/Example/Objects.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Rooms","folderPath":"folders/AgendaGML/Example/Rooms.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Example Project","folderPath":"folders/AgendaGML/Example Project.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/AgendaGML/Example Project/Objects.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Rooms","folderPath":"folders/AgendaGML/Example Project/Rooms.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/AgendaGML/Classes.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Utility","folderPath":"folders/AgendaGML/Utility.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
@@ -23,10 +25,12 @@
     "IDEVersion": "2023.2.0.71",
   },
   "resources": [
+    {"id":{"name":"__Todo","path":"scripts/__Todo/__Todo.yy",},},
     {"id":{"name":"obj_test_ball","path":"objects/obj_test_ball/obj_test_ball.yy",},},
-    {"id":{"name":"Agenda","path":"scripts/Agenda/Agenda.yy",},},
+    {"id":{"name":"__Agenda","path":"scripts/__Agenda/__Agenda.yy",},},
     {"id":{"name":"assert","path":"scripts/assert/assert.yy",},},
     {"id":{"name":"obj_test_firework","path":"objects/obj_test_firework/obj_test_firework.yy",},},
+    {"id":{"name":"agenda_create","path":"scripts/agenda_create/agenda_create.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "RoomOrderNodes": [
