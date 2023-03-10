@@ -29,7 +29,7 @@ on_click = function(_x, _y) {
 	var _destination = { x: _x, y: _y }
 	agenda_create(self, function(_agenda, _destination) {
 		move_and_return(_destination, _agenda.create_todo())
-		shoot_green_fireworks(8, _agenda.create_todo())
+		shoot_green_fireworks(irandom_range(1, 10), _agenda.create_todo())
 	}, _destination)
 	
 	.and_finally(function() {
@@ -72,24 +72,24 @@ move_and_return = function(_destination, _todo) {
 }
 
 shoot_green_fireworks = function(_amount, _todo) {
-	_todo.agenda(self, function(_agenda, _count) {
+	_todo.agenda(self, function(_agenda, _amount) {
 		var _firework = instance_create_depth(x, y, depth - 1, obj_test_firework, {
 			todo: _agenda.create_todo(),
 			color: c_green,
 		})
-		_count --
+		_amount --
 		
-		shoot_green_fireworks_text = string(_count) + " green fireworks left to shoot"
+		shoot_green_fireworks_text = string(_amount) + " green fireworks left to shoot"
 		
-		return _count
-	}, 8)
+		return _amount
+	}, _amount)
 	
-	.and_repeat_until(function(_count) {
-		return _count == 0
+	.and_repeat_until(function(_amount) {
+		return _amount == 0
 	})
 	
-	.and_finally(function(_count) {
+	.and_finally(function(_amount) {
 		shoot_green_fireworks_text = ""
-		text = "Waiting for shoot_green_fireworks to finish"
+		text = "Waiting for move_and_return to finish"
 	})
 }
