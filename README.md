@@ -56,8 +56,8 @@ agenda_create(self, function(agenda, value) {
   do_animation("attack_end", agenda.create_todo())
 })
 ```
-A final callback can be chained onto an Agenda with the `and_finally(callback)` method.
-<br>This does not create a new Agenda, and cannot be chained onto.
+A final callback can be chained onto an Agenda with the `and_finally([callback])` method.
+<br>This does not create a new Agenda, and cannot be chained off of.
 ```js
 agenda_create(self, function(agenda, value) {
   do_animation("attack_start", agenda.create_todo())
@@ -95,8 +95,23 @@ agenda_create(self, function(agenda, victim_instance) {
   var retaliation_damage = attack_instance(victim_instance)
   do_animation("attack_end", agenda.create_todo())
   return retaliation_damage
-}).and_then(agenda, retaliation_damage) {
+}).and_finally(retaliation_damage) {
   take_damage(retaliation_damage)
+})
+```
+
+___
+
+### Repeating Agendas
+
+An Agenda can be repeated with the `and_repeat_until(predicate_function)` method.
+<br>The predicate function takes the return value of the previous Agenda's handler as an argument. It should return false if the previous Agenda should be handled again, or true if it should be resolved.
+```js
+agenda_create(self, function(agenda, amount) {
+  fire_projectile(agenda.create_todo())
+  return amount --
+}, 5).and_repeat_until(function(amount) {
+  return ammount == 0
 })
 ```
 
@@ -109,9 +124,7 @@ Agendas can be created from Todos with the `agenda(scope, handler, [value])` met
 static do_animation = function(animation_name, todo) {
   todo.agenda(self, function(agenda, animation_name) {
     animate(animation_name, agenda.create_todo())
-  }, animation_name).and_finally(function(animation_name) {
-    done_animating = true
-  })
+  }, animation_name).and_finally()
 }
 
 agenda_create(self, function(agenda, value) {
@@ -120,7 +133,8 @@ agenda_create(self, function(agenda, value) {
   finished_animating = true
 })
 ```
-When the chain is finished, whether there is an `and_finally` callback or not, the Todo will call `complete` on itself automatically.
+After the chain reaches its 'and_finally' callback, the chain's source Todo will `complete` itself.
+<br>Notice how no callback is passed into `and_finally` here. As long as `and_finally` is chained onto the last agenda, the source Todo will be completed whether a callback is passed or not.
 
 ___
 
