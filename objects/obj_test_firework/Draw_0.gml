@@ -1,2 +1,2 @@
-draw_set_color(c_red)
+draw_set_color(color)
 draw_circle(x, y, 15, false)
