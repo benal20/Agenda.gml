@@ -29,8 +29,11 @@
     {"id":{"name":"obj_test_ball","path":"objects/obj_test_ball/obj_test_ball.yy",},},
     {"id":{"name":"__Agenda","path":"scripts/__Agenda/__Agenda.yy",},},
     {"id":{"name":"assert","path":"scripts/assert/assert.yy",},},
+    {"id":{"name":"__Signal","path":"scripts/__Signal/__Signal.yy",},},
     {"id":{"name":"obj_test_firework","path":"objects/obj_test_firework/obj_test_firework.yy",},},
     {"id":{"name":"agenda_create","path":"scripts/agenda_create/agenda_create.yy",},},
+    {"id":{"name":"signal_create","path":"scripts/signal_create/signal_create.yy",},},
+    {"id":{"name":"__Connection","path":"scripts/__Connection/__Connection.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "RoomOrderNodes": [

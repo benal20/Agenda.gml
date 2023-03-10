@@ -7,7 +7,10 @@
   ],
   "ResourceOrderSettings": [
     {"name":"__Todo","order":1,"path":"scripts/__Todo/__Todo.yy",},
+    {"name":"__Signal","order":2,"path":"scripts/__Signal/__Signal.yy",},
     {"name":"obj_test_firework","order":1,"path":"objects/obj_test_firework/obj_test_firework.yy",},
     {"name":"agenda_create","order":2,"path":"scripts/agenda_create/agenda_create.yy",},
+    {"name":"signal_create","order":5,"path":"scripts/signal_create/signal_create.yy",},
+    {"name":"__Connection","order":3,"path":"scripts/__Connection/__Connection.yy",},
   ],
 }
