@@ -25,7 +25,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	}
 	
 	/// Cancels the Agenda, preventing it from chaining any further. Must be called within the handler function.
-	/// @param {bool} do_complete_source_todo if true, and if one exists, completes the defined source_todo
+	/// @param {bool} do_complete_source_todo If true, and if one exists, completes the defined source_todo.
 	static cancel = function(_do_complete_source_todo = false) {
 		assert(__is_handling, "Agenda Error: Agendas cannot be canceled outside of the handler.")
 		
@@ -37,7 +37,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	}
 	
 	/// Creates and returns a new Agenda to be handled after the current Agenda is resolved.
-	/// @param {function} handler function or method
+	/// @param {function} handler Function or method.
 	static and_then = function(_handler) {
 		assert(!__is_handling, "Agenda Error: and_then cannot be called within the handler.")
 		assert(!__finally_callback, "Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called.")
@@ -48,7 +48,11 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		return __next_agenda
 	}
 	
+	/// Repeats the previous Agenda with the value its handler returned until this predicate returns false.
+	/// @param {function} repeat_predicate Accepts the value returned by the previous Agenda as an argument. Must return true or false.
 	static and_repeat_until = function(_repeat_predicate) {
+		assert(!__is_handling, "Agenda Error: and_repeat_until cannot be called within the handler.")
+		
 		__repeat_predicate = _repeat_predicate
 		__attempt_to_resolve()
 		
@@ -56,7 +60,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	}
 	
 	/// Assigns a final callback to be executed after the current Agenda is resolved.
-	/// @param {function} callback function or method
+	/// @param {function} callback Function or method.
 	static and_finally = function(_callback) {
 		assert(!__is_handling, "Agenda Error: and_finally cannot be called within the handler.")
 		assert(!__next_agenda, "Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called.")
@@ -127,6 +131,9 @@ function __Todo(_agenda) constructor{
 	}
 	
 	/// Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
+	/// @param {any}		scope	The scope to bind the handler to.
+	/// @param {function}	handler Handler function or method.
+	/// @param {any}		[value]	Optional value passed as an argument into the handler.
 	static agenda = function(_scope, _handler, _value = undefined) {
 		var _agenda = new __Agenda(_scope, _handler, self)
 		_agenda.__handle(_value)
@@ -136,9 +143,9 @@ function __Todo(_agenda) constructor{
 }
 
 /// Creates a new Agenda and executes its handler. Returns the newly created Agenda.
-/// @param {any}		scope	the scope to bind the handler to
-/// @param {function}	handler handler function or method
-/// @param {any}		[value]	optional value passed as an argument into the handler
+/// @param {any}		scope	The scope to bind the handler to.
+/// @param {function}	handler Handler function or method.
+/// @param {any}		[value]	Optional value passed as an argument into the handler.
 function agenda_create(_scope, _handler, _value = undefined) {
 	var _agenda = new __Agenda(_scope, _handler)
 	_agenda.__handle(_value)
