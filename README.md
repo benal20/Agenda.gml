@@ -133,8 +133,8 @@ agenda_create(self, function(agenda, value) {
   finished_animating = true
 })
 ```
-After the chain reaches its 'and_finally' callback, the chain's source Todo will `complete` itself.
-<br>Notice how no callback is passed into `and_finally` here. As long as `and_finally` is chained onto the last agenda, the source Todo will be completed whether a callback is passed or not.
+After the chain reaches its `and_finally` callback, the chain's source Todo will `complete` itself.
+<br>Notice how no callback is passed into `and_finally` here. As long as the final Agenda in a chain has `and_finally` chained onto it, the source Todo will be completed whether a callback is passed or not.
 
 ___
 
@@ -156,5 +156,6 @@ agenda_create(self, function(agenda, value) {
   finished_animating = true
 })
 ```
-If the Agenda was created from a Todo, you may optionally pass `true` into `cancel` to complete the source Todo immediately.
-<br>Otherwise, the Todo will not be completed automatically.
+If the Agenda was created from a source Todo, you may optionally pass `true` into `cancel` to complete the source Todo.
+<br>If this is not done, the source Todo will not be completed because the `and_finally` callback will never be executed.
+<br>If the Agenda was created from `agenda_create` then this argument is not used.
