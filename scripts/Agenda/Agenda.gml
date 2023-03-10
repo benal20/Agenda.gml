@@ -12,6 +12,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	__value = undefined
 	__next_agenda = undefined
 	__finally_callback = undefined
+	__repeat_predicate = undefined
 	
 	/// Creates and returns a new Todo. Must be called within the handler function.
 	static create_todo = function() {
@@ -47,6 +48,13 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 		return __next_agenda
 	}
 	
+	static and_repeat_until = function(_repeat_predicate) {
+		__repeat_predicate = _repeat_predicate
+		__attempt_to_resolve()
+		
+		return self
+	}
+	
 	/// Assigns a final callback to be executed after the current Agenda is resolved.
 	/// @param {function} callback function or method
 	static and_finally = function(_callback) {
@@ -59,7 +67,10 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	
 	static __attempt_to_resolve = function() {		
 		if !__is_resolved && __is_handled && array_length(__todo_list) == 0 {
-			if __finally_callback {
+			if __repeat_predicate && !__repeat_predicate(__value) {
+				__handle(__value)
+			}
+			else if __finally_callback {
 				__finally_callback(__value)
 				if __source_todo {
 					__source_todo.complete()
