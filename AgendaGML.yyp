@@ -12,10 +12,10 @@
   "defaultScriptType": 1,
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"AgendaGML","folderPath":"folders/AgendaGML.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/AgendaGML/Classes.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Example Project","folderPath":"folders/AgendaGML/Example Project.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/AgendaGML/Example Project/Objects.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Rooms","folderPath":"folders/AgendaGML/Example Project/Rooms.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Classes","folderPath":"folders/AgendaGML/Classes.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Utility","folderPath":"folders/AgendaGML/Utility.yy",},
   ],
   "IncludedFiles": [],

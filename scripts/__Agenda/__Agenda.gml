@@ -60,12 +60,12 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor {
 	}
 	
 	/// Assigns a final callback to be executed after the current Agenda is resolved.
-	/// @param {function} callback Function or method.
-	static and_finally = function(_callback) {
+	/// @param {function} callback Optional function or method.
+	static and_finally = function(_callback = undefined) {
 		assert(!__is_handling, "Agenda Error: and_finally cannot be called within the handler.")
 		assert(!__next_agenda, "Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called.")
 		
-		__finally_callback = method(__scope, _callback)
+		__finally_callback = method(__scope, _callback ?? function(){})
 		__attempt_to_resolve()
 	}
 	
@@ -83,10 +83,6 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor {
 			}
 			else if __next_agenda {
 				__next_agenda.__handle(__value)
-				__is_resolved = true
-			}
-			else if __source_todo {
-				__source_todo.complete()
 				__is_resolved = true
 			}
 		}

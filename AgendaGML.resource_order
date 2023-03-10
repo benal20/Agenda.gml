@@ -1,8 +1,8 @@
 {
   "FolderOrderSettings": [
     {"name":"AgendaGML","order":10,"path":"folders/AgendaGML.yy",},
-    {"name":"Rooms","order":1,"path":"folders/AgendaGML/Example Project/Rooms.yy",},
     {"name":"Classes","order":3,"path":"folders/AgendaGML/Classes.yy",},
+    {"name":"Rooms","order":1,"path":"folders/AgendaGML/Example Project/Rooms.yy",},
     {"name":"Utility","order":4,"path":"folders/AgendaGML/Utility.yy",},
   ],
   "ResourceOrderSettings": [
