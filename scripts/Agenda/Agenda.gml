@@ -15,7 +15,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	
 	/// Creates and returns a new Todo. Must be called within the handler function.
 	static create_todo = function() {
-		assert(!__is_handling, "Agenda Error: Todos cannot be created outside of the handler.")
+		assert(__is_handling, "Agenda Error: Todos cannot be created outside of the handler.")
 		
 		var _todo = new __Todo(self)
 		array_push(__todo_list, _todo)
@@ -26,7 +26,7 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// Cancels the Agenda, preventing it from chaining any further. Must be called within the handler function.
 	/// @param {bool} do_complete_source_todo if true, and if one exists, completes the defined source_todo
 	static cancel = function(_do_complete_source_todo = false) {
-		assert(!__is_handling, "Agenda Error: Agendas cannot be canceled outside of the handler.")
+		assert(__is_handling, "Agenda Error: Agendas cannot be canceled outside of the handler.")
 		
 		if _do_complete_source_todo && __source_todo {
 			__source_todo.complete()
@@ -38,8 +38,8 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// Creates and returns a new Agenda to be handled after the current Agenda is resolved.
 	/// @param {function} handler function or method
 	static and_then = function(_handler) {
-		assert(__is_handling, "Agenda Error: and_then cannot be called within the handler.")
-		assert(__finally_callback, "Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called.")
+		assert(!__is_handling, "Agenda Error: and_then cannot be called within the handler.")
+		assert(!__finally_callback, "Agenda Error: and_next cannot be called on this Agenda if and_finally has already been called.")
 		
 		__next_agenda = new __Agenda(__scope, _handler, __source_todo)
 		__attempt_to_resolve()
@@ -50,8 +50,8 @@ function __Agenda(_scope, _handler, _source_todo = undefined) constructor{
 	/// Assigns a final callback to be executed after the current Agenda is resolved.
 	/// @param {function} callback function or method
 	static and_finally = function(_callback) {
-		assert(__is_handling, "Agenda Error: and_finally cannot be called within the handler.")
-		assert(__next_agenda, "Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called.")
+		assert(!__is_handling, "Agenda Error: and_finally cannot be called within the handler.")
+		assert(!__next_agenda, "Agenda Error: and_finally cannot be called on this Agenda if and_then has already been called.")
 		
 		__finally_callback = method(__scope, _callback)
 		__attempt_to_resolve()
