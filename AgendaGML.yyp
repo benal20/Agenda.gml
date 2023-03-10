@@ -25,6 +25,7 @@
   "resources": [
     {"id":{"name":"obj_test_ball","path":"objects/obj_test_ball/obj_test_ball.yy",},},
     {"id":{"name":"Agenda","path":"scripts/Agenda/Agenda.yy",},},
+    {"id":{"name":"assert","path":"scripts/assert/assert.yy",},},
     {"id":{"name":"obj_test_firework","path":"objects/obj_test_firework/obj_test_firework.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
