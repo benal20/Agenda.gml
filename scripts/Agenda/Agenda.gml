@@ -28,6 +28,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	private next_agenda = undefined
 	private finally_callback = undefined
 	private repeat_predicate = undefined
+	private on_todo_completed = function(_value = undefined){}
 	
 	private static assert = function(_expression, _error_message) {
 		if !_expression {
@@ -52,9 +53,9 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 				handle(value)
 			}
 			else if finally_callback {
-				finally_callback(value)
+				var _value = finally_callback(value) ?? value
 				if source_todo {
-					source_todo.complete()
+					source_todo.complete(_value)
 				}
 				is_resolved = true
 			}
@@ -65,7 +66,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		}
 	}
 
-	private static complete_todo = function(_todo) {
+	private static complete_todo = function(_todo, _value = undefined) {
 		if !_todo.is_completed {
 			exit
 		}
@@ -73,6 +74,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		for(var _i = 0, _n = array_length(todo_list); _i < _n; _i ++) {
 			if todo_list[_i] == _todo {
 				array_delete(todo_list, _i, 1)
+				on_todo_completed(_value)
 				attempt_to_resolve()
 				break
 			}
@@ -87,6 +89,14 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		array_push(todo_list, _todo)
 
 		return _todo
+	}
+	
+	/// Sets the callback that executes when a todo has been completed. Must be called within the handler function.
+	/// @param {function} callback The callback to set. Accepts an optional value passed through a Todo's complete method as an argument.
+	static set_on_todo_completed = function(_callback) {
+		assert(is_handling, "Agenda Error: The on_todo_completed method cannot be set outside of the handler.")
+
+		on_todo_completed = method(scope, _callback)
 	}
 
 	/// Cancels this Agenda by removing its ability to be resolved. Must be called within the handler function.
@@ -140,13 +150,14 @@ private function __Agenda_Todo(_agenda) constructor {
 	private is_completed = false
 
 	/// Completes this Todo.
-	static complete = function() {
+	/// @param {any} [value] Optional value passed as an argument into the Agenda's on_todo_completed method
+	static complete = function(_value = undefined) {
 		if is_completed {
 			exit
 		}
 
 		is_completed = true
-		on_complete(self)
+		on_complete(self, _value)
 	}
 
 	/// Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
