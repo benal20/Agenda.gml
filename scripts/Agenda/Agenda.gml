@@ -11,10 +11,7 @@ function Agenda(_scope, _handler, _value = undefined): __Agenda(_scope, _handler
 	handle(_value)
 }
 
-/// Creates and handles a new Agenda.
-/// @param {any}		scope	The scope to bind the handler to.
-/// @param {function}	handler Handler function or method.
-/// @param {any}		[value]	Optional value passed as an argument into the handler.
+/// Alias of new Agenda(...)
 function agenda_create(_scope, _handler, _value = undefined) {
 	return new Agenda(_scope, _handler, _value)
 }
