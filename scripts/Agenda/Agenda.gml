@@ -33,6 +33,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	private source_todo = _source_todo
 	private todo_list = []
 	private is_handling = false
+	private is_firing_event = false
 	private is_handled = false
 	private is_resolved = false
 	private value = undefined
@@ -52,8 +53,8 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		attempt_to_resolve()
 	}
 
-	private static attempt_to_resolve = function() {
-		if !is_resolved && is_handled && array_length(todo_list) == 0 {
+	private static attempt_to_resolve = function(_force_resolve = false) {
+		if !is_resolved && (_force_resolve || (is_handled && array_length(todo_list) == 0)) {
 			if repeat_predicate && !repeat_predicate(value) {
 				handle(value)
 			}
@@ -79,7 +80,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		for(var _i = 0, _n = array_length(todo_list); _i < _n; _i ++) {
 			if todo_list[_i] == _todo {
 				array_delete(todo_list, _i, 1)
-				event_todo_completed.fire(_value)
+				event_todo_completed.fire(self, _value)
 				attempt_to_resolve()
 				break
 			}
@@ -95,11 +96,18 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 
 		return _todo
 	}
+	
+	/// Forces this Agenda to resolve immediately. Must be called within the handler function or within an event.
+	static resolve = function() {
+		assert(is_handling || is_firing_event, "Agenda Error: Agendas cannot be forcibly resolved outside of the handler or an event.")
+		
+		attempt_to_resolve(true)
+	}
 
-	/// Cancels this Agenda by removing its ability to be resolved. Must be called within the handler function.
+	/// Cancels this Agenda by removing its ability to be resolved. Must be called within the handler function or within an event.
 	/// @param {bool} do_complete_source_todo If true, and if one exists, completes the defined source_todo.
 	static cancel = function(_do_complete_source_todo = false) {
-		assert(is_handling, "Agenda Error: Agendas cannot be canceled outside of the handler.")
+		assert(is_handling || is_firing_event, "Agenda Error: Agendas cannot be canceled outside of the handler or an event.")
 
 		if _do_complete_source_todo && source_todo {
 			source_todo.complete()
@@ -171,11 +179,13 @@ private function __Agenda_Todo(_agenda) constructor {
 
 private function __Agenda_Event(_scope) constructor {
 	private scope = _scope
-	private event = undefined
+	private callback = undefined
 	
-	private static fire = function(_value = undefined) {
-		if event {
-			event(_value)
+	private static fire = function(_agenda, _value = undefined) {
+		if callback {
+			_agenda.is_firing_event = true
+			callback(_value)
+			_agenda.is_firing_event = false
 		}
 	}
 
@@ -184,6 +194,6 @@ private function __Agenda_Event(_scope) constructor {
 	static define = function(_callback) {
 		assert(is_method(_callback), "Agenda Error: __Agenda_Event.define must receive a method as an argument.")
 
-		event = method(scope, _callback)
+		callback = method(scope, _callback)
 	}
 }
