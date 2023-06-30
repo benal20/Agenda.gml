@@ -1,18 +1,12 @@
 # What are Agendas?
 
-An Agenda is a struct that allows you to schedule and delay the execution of callbacks until after pre-requisites called Todos have been completed. Agendas can be chained off of each other, making them especially useful for multi-stage animation systems.
-
-Agendas have 3 main components:
-
-- **Resolution** - What happens when the Agenda is resolved.
-- **Todos** - Structs that need to be completed in order for the Agenda to be resolved.
-- **Handler** - A method for creating Todos within an Agenda.
+Agendas are Promise-like struct objects that allow you to easily schedule and chain together callbacks. An Agenda is essentially a fancy todo list — Todos get created within a Handler function and may be completed at any time. The Agenda is resolved once all created Todos are completed, or immediately if none were created. 
 
 # Using Agendas
 
 ### Creating Agendas
 
-Agendas can be created with the `agenda_create(scope, handler, [value])` function.
+Agendas can be created like this `agenda_create(scope, handler, [value])` or this `new Agenda(scope, handler, [value])`.
 <br>Agendas created in this way are handled immediately, meaning their handler is called immediately.
 ```js
 agenda_create(self, function(agenda, value) {
@@ -52,7 +46,9 @@ Agendas can be chained onto with the `and_then(handler)` method.
 ```js
 agenda_create(self, function(agenda, value) {
   do_animation("attack_start", agenda.create_todo())
-}).and_then(function(agenda, value) {
+})
+
+.and_then(function(agenda, value) {
   do_animation("attack_end", agenda.create_todo())
 })
 ```
@@ -61,9 +57,13 @@ A final callback can be chained onto an Agenda with the `and_finally([callback])
 ```js
 agenda_create(self, function(agenda, value) {
   do_animation("attack_start", agenda.create_todo())
-}).and_then(function(agenda, value) {
+})
+
+.and_then(function(agenda, value) {
   do_animation("attack_end", agenda.create_todo())
-}).and_finally(function(value) {
+})
+
+.and_finally(function(value) {
   finished_animating = true
 })
 ```
@@ -82,7 +82,9 @@ This value will be passed into the next Agenda or final callback in the chain.
 ```js
 agenda_create(self, function(agenda, victim_instance) {
   do_animation("attack_start", agenda.create_todo())
-}, victim_instance).and_then(function(agenda, victim_instance) {
+}, victim_instance)
+
+.and_then(function(agenda, victim_instance) {
   attack_instance(victim_instance)
   do_animation("attack_end", agenda.create_todo())
 })
@@ -91,11 +93,15 @@ If you want to pass a different value into the next Agenda or final callback in 
 ```js
 agenda_create(self, function(agenda, victim_instance) {
   do_animation("attack_start", agenda.create_todo())
-}, victim_instance).and_then(function(agenda, victim_instance) {
+}, victim_instance)
+
+.and_then(function(agenda, victim_instance) {
   var retaliation_damage = attack_instance(victim_instance)
   do_animation("attack_end", agenda.create_todo())
   return retaliation_damage
-}).and_finally(retaliation_damage) {
+})
+
+.and_finally(retaliation_damage) {
   take_damage(retaliation_damage)
 })
 ```
@@ -110,31 +116,42 @@ An Agenda can be repeated with the `and_repeat_until(predicate_function)` method
 agenda_create(self, function(agenda, amount) {
   fire_projectile(agenda.create_todo())
   return amount --
-}, 5).and_repeat_until(function(amount) {
+}, 5)
+
+.and_repeat_until(function(amount) {
   return ammount == 0
 })
+
+.and_finally(amount) {
+  play_sound(snd_out_of_ammo)
+}
 ```
+If `and_repeat_until` is chained off of, it will pass the same value it received onto the next Agenda or final callback in the chain.
 
 ___
 
-### Creating Agendas from Todos
+### Chaining Agendas off of Todos
 
 Agendas can be created from Todos with the `agenda(scope, handler, [value])` method. 
 ```js
 static do_animation = function(animation_name, todo) {
   todo.agenda(self, function(agenda, animation_name) {
     animate(animation_name, agenda.create_todo())
-  }, animation_name).and_finally()
+  }, animation_name)
+
+  .and_finally()
 }
 
 agenda_create(self, function(agenda, value) {
   do_animation("attack_start", agenda.create_todo())
-}).and_finally(function(value) {
+})
+
+.and_finally(function(value) {
   finished_animating = true
 })
 ```
 After the chain reaches its `and_finally` callback, the chain's source Todo will `complete` itself.
-<br>Notice how no callback is passed into `and_finally` here. As long as the final Agenda in a chain has `and_finally` chained onto it, the source Todo will be completed whether a callback is passed or not.
+<br>Notice how no callback is passed into `and_finally` within `do_animation`. As long as the final Agenda in a chain has `and_finally` chained onto it, the source Todo will be completed whether a callback is passed or not.
 
 ___
 
@@ -147,15 +164,19 @@ agenda_create(self, function(agenda, value) {
   if !success {
     agenda.cancel()
   }
-}).and_then(function(agenda, value) {
+})
+
+.and_then(function(agenda, value) {
   var success = do_animation("attack_end", agenda.create_todo())
   if !success {
     agenda.cancel()
   }
-}).and_finally(function(value) {
+})
+
+.and_finally(function(value) {
   finished_animating = true
 })
 ```
-If the Agenda was created from a source Todo, you may optionally pass `true` into `cancel` to complete the source Todo.
-<br>If this is not done, the source Todo will not be completed because the `and_finally` callback will never be executed.
-<br>If the Agenda was created from `agenda_create` then this argument is not used.
+If the Agenda was created from the `agenda` method of a Todo, you may optionally pass `true` into `cancel` to complete the original Todo.
+<br>If this is not done, the original Todo will not be completed because the `and_finally` callback will never be executed.
+<br>If the Agenda was created from `agenda_create` then this argument is ignored.
