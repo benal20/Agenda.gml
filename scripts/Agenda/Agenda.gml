@@ -11,7 +11,7 @@ function Agenda(_scope, _handler, _value = undefined): __Agenda(_scope, _handler
 	handle(_value)
 }
 
-/// Alias of new Agenda(...)
+/// Alias of Agenda
 function agenda_create(_scope, _handler, _value = undefined) {
 	return new Agenda(_scope, _handler, _value)
 }
@@ -28,7 +28,9 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	private next_agenda = undefined
 	private finally_callback = undefined
 	private repeat_predicate = undefined
-	private on_todo_completed = function(_value = undefined){}
+	
+	// Fires whenever a todo is completed. Receives the value passed through the Todo's complete method as an argument.
+	event_todo_completed = new __Agenda_Event(scope)
 	
 	private static assert = function(_expression, _error_message) {
 		if !_expression {
@@ -74,7 +76,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		for(var _i = 0, _n = array_length(todo_list); _i < _n; _i ++) {
 			if todo_list[_i] == _todo {
 				array_delete(todo_list, _i, 1)
-				on_todo_completed(_value)
+				event_todo_completed.fire(_value)
 				attempt_to_resolve()
 				break
 			}
@@ -89,14 +91,6 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 		array_push(todo_list, _todo)
 
 		return _todo
-	}
-	
-	/// Sets the callback that executes when a todo has been completed. Must be called within the handler function.
-	/// @param {function} callback The callback to set. Accepts an optional value passed through a Todo's complete method as an argument.
-	static set_on_todo_completed = function(_callback) {
-		assert(is_handling, "Agenda Error: The on_todo_completed method cannot be set outside of the handler.")
-
-		on_todo_completed = method(scope, _callback)
 	}
 
 	/// Cancels this Agenda by removing its ability to be resolved. Must be called within the handler function.
@@ -169,5 +163,22 @@ private function __Agenda_Todo(_agenda) constructor {
 		_agenda.handle(_value)
 
 		return _agenda
+	}
+}
+
+private function __Agenda_Event(_scope) constructor {
+	private scope = _scope
+	private event = undefined
+	
+	private static fire = function(_value) {
+		if event {
+			event(_value)
+		}
+	}
+
+	/// Sets an Agenda's event.
+	/// @param {function} callback Function to define as an event of the Agenda.
+	static define = function(_callback) {
+		event = method(scope, _callback)
 	}
 }
