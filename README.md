@@ -1,6 +1,7 @@
 # What are Agendas?
 
-Agendas are Promise-like struct objects that allow you to easily schedule and chain together callbacks. An Agenda is essentially a fancy todo list — Todos get created within a Handler function and may be completed at any time. The Agenda is resolved once all created Todos are completed, or immediately if none were created. 
+Agendas are Promise-like struct objects that allow you to easily schedule and chain together callbacks. Unlike Promises, Agendas forgo error catching in favor of a simpler design more suited for offline only singleplayer games.
+<br><br>An Agenda is essentially a fancy todo list — Todos get created within a Handler function and may be completed at any time. The Agenda is resolved once all created Todos are completed, or immediately if none were created, which will then execute the Handler function of the next Agenda in the chain if one exists.
 
 # Using Agendas
 
