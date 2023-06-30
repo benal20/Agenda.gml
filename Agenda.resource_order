@@ -1,0 +1,10 @@
+{
+  "FolderOrderSettings": [
+    {"name":"Example Project","order":1,"path":"folders/Example Project.yy",},
+    {"name":"Rooms","order":1,"path":"folders/Example Project/Rooms.yy",},
+  ],
+  "ResourceOrderSettings": [
+    {"name":"Agenda","order":2,"path":"scripts/Agenda/Agenda.yy",},
+    {"name":"obj_test_firework","order":1,"path":"objects/obj_test_firework/obj_test_firework.yy",},
+  ],
+}
