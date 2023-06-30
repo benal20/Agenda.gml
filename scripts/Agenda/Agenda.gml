@@ -11,7 +11,7 @@ function Agenda(_scope, _handler, _value = undefined): __Agenda(_scope, _handler
 	handle(_value)
 }
 
-/// Alias of Agenda
+/// Alias of Agenda.
 function agenda_create(_scope, _handler, _value = undefined) {
 	return new Agenda(_scope, _handler, _value)
 }
@@ -147,7 +147,7 @@ private function __Agenda_Todo(_agenda) constructor {
 	private is_completed = false
 
 	/// Completes this Todo.
-	/// @param {any} [value] Optional value passed as an argument into the Agenda's event_todo_completed method
+	/// @param {any} [value] Optional value passed as an argument into event_todo_completed.
 	static complete = function(_value = undefined) {
 		if is_completed {
 			exit
