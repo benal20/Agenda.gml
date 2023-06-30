@@ -16,6 +16,17 @@ function agenda_create(_scope, _handler, _value = undefined) {
 	return new Agenda(_scope, _handler, _value)
 }
 
+/// Throws an error if the expression is false. Returns the expression.
+/// @param {any}	expression		If this is false, throw an error.
+/// @param {string} error_message	The error to throw.
+function assert(_expression, _error_message) {
+	if !_expression {
+		show_error(_error_message, true)
+	}
+
+	return _expression
+}
+
 private function __Agenda(_scope, _handler, _source_todo = undefined) constructor {
 	private scope = _scope
 	private handler = _handler
@@ -31,14 +42,6 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	
 	// Fires whenever a todo is completed. Receives the value passed through the Todo's complete method as an argument.
 	event_todo_completed = new __Agenda_Event(scope)
-	
-	private static assert = function(_expression, _error_message) {
-		if !_expression {
-			show_error(_error_message, true)
-		}
-
-		return _expression
-	}
 
 	private static handle = function(_value) {
 		var _handler = method(scope, handler)
@@ -144,7 +147,7 @@ private function __Agenda_Todo(_agenda) constructor {
 	private is_completed = false
 
 	/// Completes this Todo.
-	/// @param {any} [value] Optional value passed as an argument into the Agenda's on_todo_completed method
+	/// @param {any} [value] Optional value passed as an argument into the Agenda's event_todo_completed method
 	static complete = function(_value = undefined) {
 		if is_completed {
 			exit
@@ -170,7 +173,7 @@ private function __Agenda_Event(_scope) constructor {
 	private scope = _scope
 	private event = undefined
 	
-	private static fire = function(_value) {
+	private static fire = function(_value = undefined) {
 		if event {
 			event(_value)
 		}
@@ -179,6 +182,8 @@ private function __Agenda_Event(_scope) constructor {
 	/// Sets an Agenda's event.
 	/// @param {function} callback Function to define as an event of the Agenda.
 	static define = function(_callback) {
+		assert(is_method(_callback), "Agenda Error: __Agenda_Event.define must receive a method as an argument.")
+
 		event = method(scope, _callback)
 	}
 }
