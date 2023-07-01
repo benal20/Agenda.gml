@@ -6,5 +6,6 @@
   "ResourceOrderSettings": [
     {"name":"Agenda","order":2,"path":"scripts/Agenda/Agenda.yy",},
     {"name":"obj_test_firework","order":1,"path":"objects/obj_test_firework/obj_test_firework.yy",},
+    {"name":"obj_test_race","order":2,"path":"objects/obj_test_race/obj_test_race.yy",},
   ],
 }

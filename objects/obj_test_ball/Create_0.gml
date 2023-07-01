@@ -93,3 +93,13 @@ shoot_green_fireworks = function(_amount, _todo) {
 		text = "Waiting for move_and_return to finish"
 	})
 }
+
+step = function() {
+	if callback && point_distance(x, y, goal.x, goal.y) < speed {
+		x = goal.x
+		y = goal.y
+		speed = 0
+		callback()
+		callback = undefined
+	}
+}
