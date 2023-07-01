@@ -1,7 +1,7 @@
 
 /// feather ignore all
 
-#macro private
+#macro private /**/
 
 /// Creates and handles a new Agenda.
 /// @param {any}		scope	The scope to bind the handler to.
@@ -11,12 +11,20 @@ function Agenda(_scope, _handler, _value = undefined): __Agenda(_scope, _handler
 	handle(_value)
 }
 
-/// Creates and handles a new Agenda.
-/// @param {any}		scope	The scope to bind the handler to.
-/// @param {function}	handler Handler function or method.
-/// @param {any}		[value]	Optional value passed as an argument into the handler.
+/// Alias of Agenda.
 function agenda_create(_scope, _handler, _value = undefined) {
 	return new Agenda(_scope, _handler, _value)
+}
+
+/// Throws an error if an expression returns false. Returns result of the expression.
+/// @param {any}	expression		If this is false, throw an error.
+/// @param {string} error message	The error message to throw.
+function assert(_expression, _error_message) {
+	if !_expression {
+		show_error(_error_message, true)
+	}
+
+	return _expression
 }
 
 private function __Agenda(_scope, _handler, _source_todo = undefined) constructor {
@@ -31,14 +39,6 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	private next_agenda = undefined
 	private finally_callback = undefined
 	private repeat_predicate = undefined
-	
-	private static assert = function(_expression, _error_message) {
-		if !_expression {
-			show_error(_error_message, true)
-		}
-
-		return _expression
-	}
 
 	private static handle = function(_value) {
 		var _handler = method(scope, handler)
