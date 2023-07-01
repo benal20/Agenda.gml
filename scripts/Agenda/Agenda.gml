@@ -41,7 +41,7 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	private finally_callback = undefined
 	private repeat_predicate = undefined
 	
-	// Fires whenever a todo is completed. Receives the value passed through the Todo's complete method as an argument.
+	// Fires whenever a todo is completed.
 	event_todo_completed = new __Agenda_Event(scope)
 
 	private static handle = function(_value) {
@@ -98,9 +98,11 @@ private function __Agenda(_scope, _handler, _source_todo = undefined) constructo
 	}
 	
 	/// Forces this Agenda to resolve immediately. Must be called within the handler function or within an event.
-	static resolve = function() {
+	/// @param {any} [value] Optional value to set the Agenda's value to.
+	static resolve = function(_value = undefined) {
 		assert(is_handling || is_firing_event, "Agenda Error: Agendas cannot be forcibly resolved outside of the handler or an event.")
 		
+		value = _value ?? value
 		attempt_to_resolve(true)
 	}
 
@@ -184,7 +186,7 @@ private function __Agenda_Event(_scope) constructor {
 	private static fire = function(_agenda, _value = undefined) {
 		if callback {
 			_agenda.is_firing_event = true
-			callback(_value)
+			callback(_agenda, _value)
 			_agenda.is_firing_event = false
 		}
 	}
