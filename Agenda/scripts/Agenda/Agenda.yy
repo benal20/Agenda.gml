@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Agenda",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Agenda",
+  "parent":{
+    "name":"Agenda",
+    "path":"Agenda.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

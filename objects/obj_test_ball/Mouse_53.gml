@@ -1,1 +1,0 @@
-on_click(mouse_x, mouse_y)
