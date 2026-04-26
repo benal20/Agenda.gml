@@ -9,8 +9,8 @@
   "name":"obj_waiter",
   "overriddenProperties":[],
   "parent":{
-    "name":"Agenda",
-    "path":"Agenda.yyp",
+    "name":"Example Project",
+    "path":"folders/Example Project.yy",
   },
   "parentObjectId":null,
   "persistent":false,

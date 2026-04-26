@@ -1,12 +1,5 @@
-var agenda = agenda_delay(5, "yellow").and_then(function(agenda, text) {
-    x += 200
-    y += 200
-    
-    show_debug_message(text)
-    
-    agenda.extend_delay(2, text).and_then(function(agenda, text) {
-        x -= 100
-        y -= 100
-        show_debug_message(text)
+agenda_delay(0.5).and_then(function(agenda) {
+    agenda.animate(CurveInOutQuad, 0.2, function(alpha) {
+        self.x = self.xstart + (alpha * 100)
     })
 })

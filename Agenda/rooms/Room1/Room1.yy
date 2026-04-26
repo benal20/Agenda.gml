@@ -17,8 +17,8 @@
   ],
   "name":"Room1",
   "parent":{
-    "name":"Agenda",
-    "path":"Agenda.yyp",
+    "name":"Example Project",
+    "path":"folders/Example Project.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

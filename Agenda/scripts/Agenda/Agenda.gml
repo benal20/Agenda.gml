@@ -179,6 +179,10 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		
 		return self.create_todo().delay_then_complete(time)
 	}
+    
+    static animate = function(anim_curve, time, callback) {
+        return self.create_todo().animate(anim_curve, time, callback)
+    }
 	
 	/// @description Alias for as create_todo().extend(...)
     /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
@@ -425,6 +429,33 @@ function __Agenda_Todo(agenda) constructor {
         time_source_start(self.time_source)
         return self.time_source
 	}
+    
+    static animate = function(anim_curve, time, callback) {
+        var args = [anim_curve, current_time, time * 1000, callback]
+        
+        self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(anim_curve, start_time, time, callback) {
+            var time_alpha = (current_time - start_time) / time
+            if time_alpha > 1 {
+                time_alpha = 1
+            }
+            
+            var channel = animcurve_get_channel(anim_curve, 0)
+            var curve_alpha = animcurve_channel_evaluate(channel, time_alpha)
+            method_call(callback, [curve_alpha])
+            
+            if time_alpha == 1 {
+                time_source_destroy(self.time_source)
+                self.time_source = undefined
+                self.complete()
+            }
+            else {
+                time_source_reset(self.time_source)
+                time_source_start(self.time_source)
+            }
+        }, args)
+        time_source_start(self.time_source)
+        return self.time_source
+    }
 
 	/// @description Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
     /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
