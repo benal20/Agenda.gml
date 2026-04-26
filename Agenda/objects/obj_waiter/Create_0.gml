@@ -1,4 +1,4 @@
-agenda_delay(5, "yellow").and_then(function(agenda, text) {
+var agenda = agenda_delay(5, "yellow").and_then(function(agenda, text) {
     x += 200
     y += 200
     

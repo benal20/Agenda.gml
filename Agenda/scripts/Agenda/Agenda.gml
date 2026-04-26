@@ -1,8 +1,8 @@
 
-/// @function agenda_create(handler, ...)
 /// @description Creates and handles a new Agenda.
-/// @param {function}	handler Handler method used to create Todos for the Todo List.
-/// @param {any}		[...]	[OPTIONAL] Additional values that will be pased into the handler.
+/// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
+/// @param {any}        [...]   Additional values that will be passed into the handler.
+/// @return {struct.__Agenda}
 function agenda_create(handler) {
 	__GET_ARGS_AS_ARRAY
 	array_delete(__arg_array, 0, 1)
@@ -13,10 +13,10 @@ function agenda_create(handler) {
 	return agenda
 }
 
-/// @function agenda_delay(time, ...)
 /// @description Creates and handles a new Agenda which resolves after a set amount of time.
-/// @param {number} time		Amount of time to delay.
-/// @param {any}	[...]		[OPTIONAL] Additional values that will be pased into the handler.
+/// @param {real}   time    Amount of time to delay.
+/// @param {any}    [...]	Additional values that will be pased into the handler.
+/// @return {struct.__Agenda}
 function agenda_delay(time) {
 	__GET_ARGS_AS_ARRAY
 	var agenda = new __Agenda(function(agenda, time) {
@@ -53,6 +53,7 @@ enum AGENDA_TODO_STATE {
 	CANCELED,
 }
 
+/// @ignore
 function __Agenda(handler, parent_todo = undefined) constructor {
 	self.handler = method(method_get_self(handler), handler)
 	self.parent_todo = parent_todo
@@ -66,6 +67,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 	self.finally_callback = undefined
 	self.repeat_predicate = undefined
     
+    /// @ignore
 	static __handle = function() {
 		__GET_ARGS_AS_ARRAY
 		array_insert(__arg_array, 0, self)
@@ -93,6 +95,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		self.__attempt_to_resolve()
 	}
 
+    /// @ignore
 	static __attempt_to_resolve = function() {
 		if self.state == AGENDA_STATE.HANDLED && array_length(self.todo_list) == 0 {
 			if self.repeat_predicate && !method_call(self.repeat_predicate, self.arg_array) {
@@ -128,6 +131,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 	}
 
+    /// @ignore
 	static __complete_todo = function(todo) {
 		__GET_ARGS_AS_ARRAY
 		array_delete(__arg_array, 0, 1)
@@ -144,7 +148,8 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 	}
 
-	/// Creates a new Todo. Must be called within the handler function.
+	/// @description Creates a new Todo. Must be called within the handler function.
+    /// @return {Struct.__Agenda_Todo}
 	static create_todo = function() {
 		if !self.is_handling() {
             show_error("Agenda.create_todo can only be called while the Agenda is being handled.", true)
@@ -160,8 +165,9 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return todo
 	}
 	
-	/// Same as create_todo().delay_then_complete(time)
-	/// @param {number} time	Amount of time to delay.
+	/// @description Alias for create_todo().delay_then_complete(time)
+	/// @param {Real} time	Amount of time to delay.
+    /// @return {Id.TimeSource}
 	static delay = function(time) {
 		if !self.is_handling() {
             show_error("Agenda.delay can only be called while the Agenda is being handled.", true)
@@ -174,9 +180,10 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self.create_todo().delay_then_complete(time)
 	}
 	
-	/// Alias for as create_todo().extend(...)
-	/// @param {function}	handler Handler function or method.
-	/// @param {any}		[value]	Optional value passed as an argument into the handler.
+	/// @description Alias for as create_todo().extend(...)
+    /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
+    /// @param {any}        [...]   Additional values that will be passed into the handler.
+    /// @return {Struct.__Agenda}
 	static extend = function(handler) {
 		if !self.is_handling() {
             show_error("Agenda.extend can only be called while the Agenda is being handled.", true)
@@ -193,9 +200,10 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 	}
 	
-	/// Extends and returns the Agenda with a delay.
-	/// @param {number} time	Amount of time to delay.
-	/// @param {any}	[value]	Optional value passed as an argument into the handler.
+	/// @description Extends and returns the Agenda with a delay.
+	/// @param {real} time    Amount of time to delay.
+    /// @param {any}  [...]   Additional values that will be passed into the handler.
+    /// @return {Struct.__Agenda}
 	static extend_delay = function(time) {
 		if !self.is_handling() {
             show_error("Agenda.extend_delay can only be called while the Agenda is being handled.", true)
@@ -212,7 +220,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 	}
 
-	/// Cancels this Agenda and all other Agendas chained onto it and off of it.
+	/// @description Cancels this Agenda and all other Agendas chained onto it and off of it.
 	/// @param {bool} cancel_parent_todo If true, and if one exists, cancel the defined parent_todo. Otherwise, complete it.
 	static cancel = function(cancel_parent_todo = false) {
 		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
@@ -246,8 +254,10 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 	}
 
-	/// Creates and returns a new Agenda to be handled after this Agenda is resolved.
-	/// @param {function} handler Function or method.
+	/// @description Creates and returns a new Agenda to be handled after this Agenda is resolved.
+    /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
+    /// @param {any}        [...]   Additional values that will be passed into the handler.
+    /// @return {Struct.__Agenda}
 	static and_then = function(handler) {
 		if self.is_handling() {
             show_error("Agenda.and_then cannot be called from within the handler method.", true)
@@ -274,8 +284,9 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self.next_agenda
 	}
 
-	/// Repeats this Agenda with the value its handler returned until the predicate returns false.
+	/// @description Repeats this Agenda with the value its handler returned until the predicate returns false.
 	/// @param {function} repeat_predicate Accepts the value returned by the previous Agenda as an argument. Must return true or false.
+    /// @return {Struct.__Agenda}
 	static and_repeat_until = function(repeat_predicate) {
 		if self.is_handling() {
             show_error("Agenda.and_repeat_until cannot be called from within the handler method.", true)
@@ -300,8 +311,9 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self
 	}
 
-	/// Assigns a final callback to be executed after the current Agenda is resolved.
+	/// @description Assigns a final callback to be executed after the current Agenda is resolved.
 	/// @param {function} callback Optional function or method.
+    /// @return {Struct.__Agenda}
 	static and_finally = function(callback = undefined) {
 		if self.is_handling() {
             show_error("Agenda.and_finally cannot be called from within the handler method.", true)
@@ -329,37 +341,44 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self
 	}
 	
-	/// Returns true if the Agenda is unhandled.
+	/// @description Returns true if the Agenda is unhandled.
+    /// @return {bool}
 	static is_unhandled = function() {
 		return self.state == AGENDA_STATE.UNHANDLED
 	}
 	
-	/// Returns true if the Agenda is currently being handled.
+	/// @description Returns true if the Agenda is currently being handled.
+    /// @return {bool}
 	static is_handling = function() {
 		return self.state == AGENDA_STATE.HANDLING
 	}
 	
-	/// Returns true if the Agenda has been handled.
+	/// @description Returns true if the Agenda has been handled.
+    /// @return {bool}
 	static is_handled = function() {
 		return self.state == AGENDA_STATE.HANDLED
 	}
 	
-	/// Returns true if the Agenda is resolved.
+	/// @description Returns true if the Agenda is resolved.
+    /// @return {bool}
 	static is_resolved = function() {
 		return self.state == AGENDA_STATE.RESOLVED
 	}
 	
-	/// Returns true if the Agenda is canceled.
+	/// @description Returns true if the Agenda is canceled.
+    /// @return {bool}
 	static is_canceled = function() {
 		return self.state == AGENDA_STATE.CANCELED
 	}
 	
-	/// Returns the current state of the Agenda.
+	/// @description Returns the current state of the Agenda.
+    /// @return {bool}
 	static get_state = function() {
 		return self.state
 	}
 }
 
+/// @ignore
 function __Agenda_Todo(agenda) constructor {
 	self.on_complete = method(agenda, agenda.__complete_todo)
 	self.on_cancel = method(agenda, agenda.cancel)
@@ -367,8 +386,8 @@ function __Agenda_Todo(agenda) constructor {
 	self.state = AGENDA_TODO_STATE.INCOMPLETE
     self.time_source = undefined
 
-	/// Completes this Todo.
-	/// @param {any} [value] Optional value which overwrites the Agenda's value.
+	/// @description Completes this Todo.
+	/// @param {any} [...] Additional values which overwrites the Agenda's values array if this agenda is the last to be completed.
 	static complete = function() {
 		__GET_ARGS_AS_ARRAY
 		array_insert(__arg_array, 0, self)
@@ -380,7 +399,7 @@ function __Agenda_Todo(agenda) constructor {
 		method_call(self.on_complete, __arg_array)
 	}
 	
-	/// Cancels this Todo and its Agenda chain.
+	/// @description Cancels this Todo and its Agenda chain.
 	static cancel = function() {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
@@ -390,8 +409,9 @@ function __Agenda_Todo(agenda) constructor {
 		self.on_cancel(self)
 	}
 	
-	/// Waits for a period of time, then completes the todo.
-	/// @param {number} time   Amount of time to delay.
+	/// @description Waits for a period of time, then completes the todo.
+	/// @param {real} time   Amount of time to delay.
+    /// @return {Id.TimeSource}
 	static delay_then_complete = function(time) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
@@ -406,9 +426,9 @@ function __Agenda_Todo(agenda) constructor {
         return self.time_source
 	}
 
-	/// Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
-	/// @param {function}	handler Handler function or method.
-	/// @param {any}		[value]	Optional value passed as an argument into the handler.
+	/// @description Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
+    /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
+    /// @param {any}		[...]	Additional values that will be passed into the handler.
 	static extend = function(handler) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
@@ -423,9 +443,9 @@ function __Agenda_Todo(agenda) constructor {
 		return agenda
 	}
 
-	/// Creates a new Agenda from this Todo and resolves it after a delay. Returns the newly created Agenda.
-	/// @param {number} time	Amount of time to delay.
-	/// @param {any}	[value]	Optional value passed as an argument into the handler.
+	/// @description Creates a new Agenda from this Todo and resolves it after a delay. Returns the newly created Agenda.
+	/// @param {real} time	Amount of time to delay.
+    /// @param {any} [...]	Additional values that will be passed into the handler.
 	static extend_delay = function(time) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
