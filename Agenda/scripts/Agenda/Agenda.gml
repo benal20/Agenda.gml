@@ -180,8 +180,18 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self.create_todo().delay_then_complete(time)
 	}
     
+    /// @description Alias of create_todo().animate(anim_curve, time, callback, ...)
+    /// @param {Id.AnimationCurve}  anim_curve  The anim curve to use.
+    /// @param {real}               time        Amount of time to animate for.
+    /// @param {function}           callback    The method to run every frame over the animation curve.
+    /// @param {any}		        [...]	    Additional values that will be passed into the callback.
+    /// @return {Id.TimeSource}
     static animate = function(anim_curve, time, callback) {
-        return self.create_todo().animate(anim_curve, time, callback)
+        __GET_ARGS_AS_ARRAY
+        var todo = self.create_todo()
+        with todo {
+            return method_call(self.animate, __arg_array)
+        }
     }
 	
 	/// @description Alias for as create_todo().extend(...)
@@ -430,18 +440,27 @@ function __Agenda_Todo(agenda) constructor {
         return self.time_source
 	}
     
+    /// @description Executes a provided callback every frame over a given time period and animation curve, completing the todo at the end.
+    /// @param {Id.AnimationCurve}  anim_curve  The anim curve to use.
+    /// @param {real}               time        Amount of time to animate for.
+    /// @param {function}           callback    The method to run every frame over the animation curve.
+    /// @param {any}		        [...]	    Additional values that will be passed into the callback.
+    /// @return {Id.TimeSource}
     static animate = function(anim_curve, time, callback) {
-        var args = [anim_curve, current_time, time * 1000, callback]
-        
-        self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(anim_curve, start_time, time, callback) {
-            var time_alpha = (current_time - start_time) / time
+        __GET_ARGS_AS_ARRAY
+        array_insert(__arg_array, 0, current_time)
+        self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(start_time, anim_curve, time, callback) {
+            __GET_ARGS_AS_ARRAY
+            array_delete(__arg_array, 0, 4)
+            var time_alpha = (current_time - start_time) / (time * 1000)
             if time_alpha > 1 {
                 time_alpha = 1
             }
             
             var channel = animcurve_get_channel(anim_curve, 0)
             var curve_alpha = animcurve_channel_evaluate(channel, time_alpha)
-            method_call(callback, [curve_alpha])
+            array_insert(__arg_array, 0, curve_alpha)
+            method_call(callback, __arg_array)
             
             if time_alpha == 1 {
                 time_source_destroy(self.time_source)
@@ -452,7 +471,7 @@ function __Agenda_Todo(agenda) constructor {
                 time_source_reset(self.time_source)
                 time_source_start(self.time_source)
             }
-        }, args)
+        }, __arg_array)
         time_source_start(self.time_source)
         return self.time_source
     }
