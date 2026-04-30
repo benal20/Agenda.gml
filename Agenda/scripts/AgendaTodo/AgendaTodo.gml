@@ -45,13 +45,13 @@ function __Agenda_Todo(agenda) constructor {
 	
 	/// @description Waits for a period of time, then completes the todo.
 	/// @param {real} time   Amount of time to delay.
-    /// @return {Id.TimeSource}
+    /// @return {Id.TimeSource,undefined}
 	static delay_then_complete = function(time) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
+			return undefined
 		}
 		if self.time_source != undefined {
-            exit
+            return undefined
         }
 		
 		self.time_source = time_source_create(time_source_game, time, time_source_units_seconds, function() {
@@ -65,13 +65,13 @@ function __Agenda_Todo(agenda) constructor {
     
     /// @description Completes the todo on the next frame, or in a number of frames.
 	/// @param {real} [frames]   Amount of frames to defer.
-    /// @return {Id.TimeSource}
+    /// @return {Id.TimeSource,undefined}
     static defer_then_complete = function(frames = 1) {
         if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
+			return undefined
 		}
 		if self.time_source != undefined {
-            exit
+            return undefined
         }
 		
 		self.time_source = time_source_create(time_source_game, frames, time_source_units_frames, function() {
@@ -86,13 +86,13 @@ function __Agenda_Todo(agenda) constructor {
     /// @description Executes a predicate method every frame until it returns true, then resolves the todo.
     /// @param {function}  predicate The method to run every frame until it returns true.
     /// @param {any}	   [...]	 Additional values that will be passed into the predicate.
-    /// @return {Id.TimeSource}
+    /// @return {Id.TimeSource,undefined}
     static delay_until_then_complete = function(predicate) {
         if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
+			return undefined
 		}
 		if self.time_source != undefined {
-            exit
+            return undefined
         }
         
         __GET_ARGS_AS_ARRAY
@@ -117,13 +117,13 @@ function __Agenda_Todo(agenda) constructor {
     /// @param {real}               time        Amount of time to tween for.
     /// @param {function}           callback    The method to run every frame over the animation curve.
     /// @param {any}		        [...]	    Additional values that will be passed into the callback.
-    /// @return {Id.TimeSource}
+    /// @return {Id.TimeSource,undefined}
     static tween_then_complete = function(anim_curve, time, callback) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
+			return undefined
 		}
 		if self.time_source != undefined {
-            exit
+            return undefined
         }
         
         __GET_ARGS_AS_ARRAY
@@ -158,9 +158,10 @@ function __Agenda_Todo(agenda) constructor {
 	/// @description Creates a new Agenda from this Todo and executes its handler. Returns the newly created Agenda.
     /// @param {function}   handler Method used to create Todos for the Todo List. Takes this agenda and any additionally provided values as arguments.
     /// @param {any}		[...]	Additional values that will be passed into the handler.
+    /// @return {struct.__Agenda,undefined}
 	static extend = function(handler) {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
+			return undefined
 		}
         
         self.extended_agenda = new __Agenda(handler, self)
