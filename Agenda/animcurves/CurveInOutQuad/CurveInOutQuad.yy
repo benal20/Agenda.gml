@@ -10,8 +10,8 @@
   "function":2,
   "name":"CurveInOutQuad",
   "parent":{
-    "name":"Quad",
-    "path":"folders/AnimCurves/Quad.yy",
+    "name":"Example Project",
+    "path":"folders/Agenda/Example Project.yy",
   },
   "resourceType":"GMAnimCurve",
   "resourceVersion":"2.0",

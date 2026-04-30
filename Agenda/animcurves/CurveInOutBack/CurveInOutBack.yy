@@ -11,8 +11,8 @@
   "function":2,
   "name":"CurveInOutBack",
   "parent":{
-    "name":"Back",
-    "path":"folders/AnimCurves/Back.yy",
+    "name":"Example Project",
+    "path":"folders/Agenda/Example Project.yy",
   },
   "resourceType":"GMAnimCurve",
   "resourceVersion":"2.0",

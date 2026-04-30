@@ -1,16 +1,16 @@
 {
   "$GMObject":"",
-  "%Name":"obj_waiter",
+  "%Name":"obj_agenda_example",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_waiter",
+  "name":"obj_agenda_example",
   "overriddenProperties":[],
   "parent":{
     "name":"Example Project",
-    "path":"folders/Example Project.yy",
+    "path":"folders/Agenda/Example Project.yy",
   },
   "parentObjectId":null,
   "persistent":false,

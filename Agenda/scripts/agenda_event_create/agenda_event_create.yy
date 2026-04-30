@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"Agenda",
+  "%Name":"agenda_event_create",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Agenda",
+  "name":"agenda_event_create",
   "parent":{
-    "name":"System",
-    "path":"folders/Agenda/System.yy",
+    "name":"Agenda",
+    "path":"folders/Agenda.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

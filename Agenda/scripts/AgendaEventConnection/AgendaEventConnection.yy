@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Agenda",
+  "%Name":"AgendaEventConnection",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Agenda",
+  "name":"AgendaEventConnection",
   "parent":{
     "name":"System",
     "path":"folders/Agenda/System.yy",

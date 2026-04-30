@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Agenda",
+  "%Name":"AgendaGlobals",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Agenda",
+  "name":"AgendaGlobals",
   "parent":{
     "name":"System",
     "path":"folders/Agenda/System.yy",
