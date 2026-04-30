@@ -98,8 +98,7 @@ function __Agenda_Todo(agenda) constructor {
         __GET_ARGS_AS_ARRAY
         self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(predicate) {
             __GET_ARGS_AS_ARRAY
-            array_delete(__arg_array, 0, 1)
-            if method_call(predicate, __arg_array) {
+            if method_call(predicate, __arg_array, 1) {
                 time_source_destroy(self.time_source)
                 self.time_source = undefined
                 self.complete()
