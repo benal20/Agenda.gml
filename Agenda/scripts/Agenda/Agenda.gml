@@ -6,15 +6,11 @@
 function agenda_create(handler) {
 	__GET_ARGS_AS_ARRAY
 	array_delete(__arg_array, 0, 1)
-	var agenda = new __Agenda(handler)
-	with agenda {
-		method_call(agenda.__handle, __arg_array)
+	with new __Agenda(handler) {
+		method_call(self.__handle, __arg_array)
+        return self
 	}
-	return agenda
 }
-
-
-// Agenda internals
 
 #macro __GET_ARGS_AS_ARRAY var __arg_array = []\
 for(var __i = 0; __i < argument_count; __i ++) {\
@@ -216,8 +212,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		}
 		
 		__GET_ARGS_AS_ARRAY
-		var todo = self.create_todo()
-		with todo {
+		with self.create_todo() {
 			return method_call(self.extend, __arg_array)
 		}
 	}
@@ -519,11 +514,9 @@ function __Agenda_Todo(agenda) constructor {
 		}
 		
 		__GET_ARGS_AS_ARRAY
-		var agenda = new __Agenda(handler, self)
-		with agenda {
+		with new __Agenda(handler, self) {
 			method_call(self.__handle, __arg_array, 1)
+            return self
 		}
-
-		return agenda
 	}
 }

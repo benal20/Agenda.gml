@@ -1,4 +1,6 @@
-agenda_delay(0.5).and_then(function(agenda) {
+agenda_create(function(agenda) {
+    agenda.delay(0.5)
+}).and_then(function(agenda) {
     agenda.tween(CurveInOutQuad, 0.2, function(alpha, start_x) {
         self.x = start_x + (alpha * 100)
     }, self.x)
