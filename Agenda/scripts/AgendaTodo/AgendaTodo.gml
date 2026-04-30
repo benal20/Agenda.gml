@@ -37,8 +37,7 @@ function __Agenda_Todo(agenda) constructor {
             self.cancel()
         }
         if self.extended_agenda {
-            with self.extended_agenda {
-                show_debug_message(self)
+            with self.extended_agenda { 
                 self.cancel()
             }
         }

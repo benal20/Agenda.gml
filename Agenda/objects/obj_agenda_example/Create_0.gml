@@ -29,6 +29,9 @@ var agenda = agenda_create(function(agenda) {
     }).and_finally(function() {
         self.x = self.xstart
         self.y = self.ystart
+    }).when_canceled(function() {
+        self.x = self.xstart
+        self.y = self.ystart
     })
 }).and_repeat_until(function() {
     return false

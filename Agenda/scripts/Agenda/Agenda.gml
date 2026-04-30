@@ -12,6 +12,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 	self.next_agenda = undefined
 	self.finally_callback = undefined
 	self.repeat_predicate = undefined
+    self.canceled_callback = undefined
     
     /// @ignore
 	static __handle = function() {
@@ -202,7 +203,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 
 	/// @description Cancels this Agenda and all other Agendas chained onto it and off of it.
 	static cancel = function() {
-		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
+		if self.state == AGENDA_STATE.CANCELED {
 			exit
 		}
 
@@ -221,6 +222,10 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		if self.parent_todo {
 			self.parent_todo.cancel()
 		}
+        
+        if self.canceled_callback {
+            self.canceled_callback()
+        }
 	}
 
 	/// @description Creates and returns a new Agenda to be handled after this Agenda is resolved.
@@ -309,6 +314,26 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		
 		return self
 	}
+    
+    /// @description Adds a callback that fires if this Agenda is ever cancelled.
+    /// @param {function} callback The callback be call.
+    /// @return {Struct.__Agenda}
+    static when_canceled = function(callback) {
+        if self.is_handling() {
+            show_error("Agenda.when_canceled cannot be called from within the handler method.", true)
+        }
+        if self.canceled_callback {
+            show_error("Agenda.when_canceled cannot be called if Agenda.when_canceled has already been called.", true)
+        }
+		
+		if self.state == AGENDA_STATE.CANCELED {
+			exit
+		}
+        
+        self.canceled_callback = method(method_get_self(callback), callback)
+        
+        return self
+    }
 	
 	/// @description Returns true if the Agenda is unhandled.
     /// @return {bool}
@@ -341,7 +366,7 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 	}
 	
 	/// @description Returns the current state of the Agenda.
-    /// @return {bool}
+    /// @return {real}
 	static get_state = function() {
 		return self.state
 	}
