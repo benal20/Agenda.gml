@@ -11,8 +11,8 @@
   "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"AnimCurves","folderPath":"folders/AnimCurves.yy","name":"AnimCurves","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Quad","folderPath":"folders/AnimCurves/Quad.yy","name":"Quad","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Back","folderPath":"folders/AnimCurves/Back.yy","name":"Back","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Quad","folderPath":"folders/AnimCurves/Quad.yy","name":"Quad","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Example Project","folderPath":"folders/Example Project.yy","name":"Example Project","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "ForcedPrefabProjectReferences":[],
@@ -30,6 +30,7 @@
     {"id":{"name":"CurveInQuad","path":"animcurves/CurveInQuad/CurveInQuad.yy",},},
     {"id":{"name":"CurveOutBack","path":"animcurves/CurveOutBack/CurveOutBack.yy",},},
     {"id":{"name":"CurveOutQuad","path":"animcurves/CurveOutQuad/CurveOutQuad.yy",},},
+    {"id":{"name":"obj_agenda","path":"objects/obj_agenda/obj_agenda.yy",},},
     {"id":{"name":"obj_waiter","path":"objects/obj_waiter/obj_waiter.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"Agenda","path":"scripts/Agenda/Agenda.yy",},},
