@@ -12,7 +12,7 @@
   "Folders":[
     {"$GMFolder":"","%Name":"AnimCurves","folderPath":"folders/AnimCurves.yy","name":"AnimCurves","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Quad","folderPath":"folders/AnimCurves/Quad.yy","name":"Quad","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Sine","folderPath":"folders/AnimCurves/Sine.yy","name":"Sine","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Back","folderPath":"folders/AnimCurves/Back.yy","name":"Back","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Example Project","folderPath":"folders/Example Project.yy","name":"Example Project","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "ForcedPrefabProjectReferences":[],

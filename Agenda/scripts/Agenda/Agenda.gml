@@ -180,17 +180,43 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		return self.create_todo().delay_then_complete(time)
 	}
     
-    /// @description Alias of create_todo().animate(anim_curve, time, callback, ...)
+    /// @description Alias for create_todo().delay_until_then_complete(predicate, ...)
+    /// @param {function}  predicate The method to run every frame until it returns true.
+    /// @param {any}	   [...]	 Additional values that will be passed into the predicate.
+    /// @return {Id.TimeSource}
+    static delay_until = function(predicate) {
+		if !self.is_handling() {
+            show_error("Agenda.delay_until can only be called while the Agenda is being handled.", true)
+        }
+		
+		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
+			exit
+		}
+        
+        __GET_ARGS_AS_ARRAY
+        with self.create_todo() {
+            return method_call(self.delay_until_then_complete, __arg_array)
+        }
+    }
+    
+    /// @description Alias of create_todo().tween_then_complete(anim_curve, time, callback, ...)
     /// @param {Id.AnimationCurve}  anim_curve  The anim curve to use.
-    /// @param {real}               time        Amount of time to animate for.
+    /// @param {real}               time        Amount of time to tween for.
     /// @param {function}           callback    The method to run every frame over the animation curve.
     /// @param {any}		        [...]	    Additional values that will be passed into the callback.
     /// @return {Id.TimeSource}
-    static animate = function(anim_curve, time, callback) {
+    static tween = function(anim_curve, time, callback) {
+		if !self.is_handling() {
+            show_error("Agenda.tween can only be called while the Agenda is being handled.", true)
+        }
+		
+		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
+			exit
+		}
+        
         __GET_ARGS_AS_ARRAY
-        var todo = self.create_todo()
-        with todo {
-            return method_call(self.animate, __arg_array)
+        with self.create_todo() {
+            return method_call(self.tween_then_complete, __arg_array)
         }
     }
 	
@@ -418,6 +444,11 @@ function __Agenda_Todo(agenda) constructor {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
 		}
+        
+        if self.time_source != undefined && time_source_exists(self.time_source) {
+            time_source_destroy(self.time_source)
+            self.time_source = undefined
+        }
 		
 		self.state = AGENDA_TODO_STATE.CANCELED
 		self.on_cancel(self)
@@ -430,6 +461,10 @@ function __Agenda_Todo(agenda) constructor {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
 		}
+		if self.time_source != undefined {
+            exit
+        }
+        
 		
 		self.time_source = time_source_create(time_source_game, time, time_source_units_seconds, function() {
             time_source_destroy(self.time_source)
@@ -440,13 +475,50 @@ function __Agenda_Todo(agenda) constructor {
         return self.time_source
 	}
     
+    /// @description Executes a predicate method every frame until it returns true, then resolves the todo.
+    /// @param {function}  predicate The method to run every frame until it returns true.
+    /// @param {any}	   [...]	 Additional values that will be passed into the predicate.
+    /// @return {Id.TimeSource}
+    static delay_until_then_complete = function(predicate) {
+        if self.state != AGENDA_TODO_STATE.INCOMPLETE {
+			exit
+		}
+		if self.time_source != undefined {
+            exit
+        }
+        
+        __GET_ARGS_AS_ARRAY
+        self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(predicate) {
+            __GET_ARGS_AS_ARRAY
+            array_delete(__arg_array, 0, 1)
+            if method_call(predicate, __arg_array) {
+                time_source_destroy(self.time_source)
+                self.time_source = undefined
+                self.complete()
+            }
+            else {
+                time_source_reset(self.time_source)
+                time_source_start(self.time_source)
+            }
+        }, __arg_array)
+        time_source_start(self.time_source)
+        return self.time_source
+    }
+    
     /// @description Executes a provided callback every frame over a given time period and animation curve, completing the todo at the end.
     /// @param {Id.AnimationCurve}  anim_curve  The anim curve to use.
-    /// @param {real}               time        Amount of time to animate for.
+    /// @param {real}               time        Amount of time to tween for.
     /// @param {function}           callback    The method to run every frame over the animation curve.
     /// @param {any}		        [...]	    Additional values that will be passed into the callback.
     /// @return {Id.TimeSource}
-    static animate = function(anim_curve, time, callback) {
+    static tween_then_complete = function(anim_curve, time, callback) {
+		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
+			exit
+		}
+		if self.time_source != undefined {
+            exit
+        }
+        
         __GET_ARGS_AS_ARRAY
         array_insert(__arg_array, 0, current_time)
         self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(start_time, anim_curve, time, callback) {

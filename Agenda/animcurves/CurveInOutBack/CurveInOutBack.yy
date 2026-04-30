@@ -11,8 +11,8 @@
   "function":2,
   "name":"CurveInOutBack",
   "parent":{
-    "name":"Sine",
-    "path":"folders/AnimCurves/Sine.yy",
+    "name":"Back",
+    "path":"folders/AnimCurves/Back.yy",
   },
   "resourceType":"GMAnimCurve",
   "resourceVersion":"2.0",
