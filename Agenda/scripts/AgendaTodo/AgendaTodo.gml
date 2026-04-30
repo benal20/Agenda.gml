@@ -1,9 +1,7 @@
 
 /// @ignore
 function __Agenda_Todo(agenda) constructor {
-	self.on_complete = method(agenda, agenda.__complete_todo)
-	self.on_cancel = method(agenda, agenda.cancel)
-	
+	self.agenda = agenda
 	self.state = AGENDA_TODO_STATE.INCOMPLETE
     self.time_source = undefined
 
@@ -17,7 +15,9 @@ function __Agenda_Todo(agenda) constructor {
 		}
 
 		self.state = AGENDA_TODO_STATE.COMPLETE
-		method_call(self.on_complete, __arg_array)
+        with self.agenda {
+            method_call(self.__complete_todo, __arg_array)
+        }
 	}
 	
 	/// @description Cancels this Todo and its Agenda chain.
@@ -32,7 +32,9 @@ function __Agenda_Todo(agenda) constructor {
         }
 		
 		self.state = AGENDA_TODO_STATE.CANCELED
-		self.on_cancel(self)
+        with self.agenda {
+            self.cancel(self)
+        }
 	}
 	
 	/// @description Waits for a period of time, then completes the todo.
@@ -54,6 +56,7 @@ function __Agenda_Todo(agenda) constructor {
         time_source_start(self.time_source)
         return self.time_source
 	}
+    
     /// @description Completes the todo on the next frame, or in a number of frames.
 	/// @param {real} [frames]   Amount of frames to defer.
     /// @return {Id.TimeSource}
