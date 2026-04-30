@@ -13,24 +13,6 @@ function agenda_create(handler) {
 	return agenda
 }
 
-/// @description Creates and handles a new Agenda which resolves after a set amount of time.
-/// @param {real}   time    Amount of time to delay.
-/// @param {any}    [...]	Additional values that will be pased into the handler.
-/// @return {struct.__Agenda}
-function agenda_delay(time) {
-	__GET_ARGS_AS_ARRAY
-	var agenda = new __Agenda(function(agenda, time) {
-		__GET_ARGS_AS_ARRAY
-		agenda.delay(time)
-		array_delete(__arg_array, 0, 2)
-		return __arg_array
-	})
-	with agenda {
-		method_call(agenda.__handle, __arg_array)
-	}
-	return agenda
-}
-
 
 // Agenda internals
 
@@ -237,26 +219,6 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 		var todo = self.create_todo()
 		with todo {
 			return method_call(self.extend, __arg_array)
-		}
-	}
-	
-	/// @description Extends and returns the Agenda with a delay.
-	/// @param {real} time    Amount of time to delay.
-    /// @param {any}  [...]   Additional values that will be passed into the handler.
-    /// @return {Struct.__Agenda}
-	static extend_delay = function(time) {
-		if !self.is_handling() {
-            show_error("Agenda.extend_delay can only be called while the Agenda is being handled.", true)
-        }
-		
-		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
-			exit
-		}
-		
-		__GET_ARGS_AS_ARRAY
-		var todo = self.create_todo()
-		with todo {
-			return method_call(self.extend_delay, __arg_array)
 		}
 	}
 
@@ -562,27 +524,6 @@ function __Agenda_Todo(agenda) constructor {
 			method_call(self.__handle, __arg_array, 1)
 		}
 
-		return agenda
-	}
-
-	/// @description Creates a new Agenda from this Todo and resolves it after a delay. Returns the newly created Agenda.
-	/// @param {real} time	Amount of time to delay.
-    /// @param {any} [...]	Additional values that will be passed into the handler.
-	static extend_delay = function(time) {
-		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
-			exit
-		}
-		
-		__GET_ARGS_AS_ARRAY
-		var agenda = new __Agenda(function(agenda, time) {
-			__GET_ARGS_AS_ARRAY
-			agenda.delay(time)
-			array_delete(__arg_array, 0, 2)
-			return __arg_array
-		}, self)
-		with agenda {
-			method_call(self.__handle, __arg_array)	
-		}
 		return agenda
 	}
 }
