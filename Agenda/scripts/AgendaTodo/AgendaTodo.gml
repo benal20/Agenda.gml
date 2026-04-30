@@ -2,6 +2,7 @@
 /// @ignore
 function __Agenda_Todo(agenda) constructor {
 	self.agenda = agenda
+    self.extended_agenda = undefined
 	self.state = AGENDA_TODO_STATE.INCOMPLETE
     self.time_source = undefined
 
@@ -33,7 +34,13 @@ function __Agenda_Todo(agenda) constructor {
 		
 		self.state = AGENDA_TODO_STATE.CANCELED
         with self.agenda {
-            self.cancel(self)
+            self.cancel()
+        }
+        if self.extended_agenda {
+            with self.extended_agenda {
+                show_debug_message(self)
+                self.cancel()
+            }
         }
 	}
 	
@@ -157,9 +164,11 @@ function __Agenda_Todo(agenda) constructor {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
 		}
+        
+        self.extended_agenda = new __Agenda(handler, self)
 		
 		__GET_ARGS_AS_ARRAY
-		with new __Agenda(handler, self) {
+		with self.extended_agenda {
 			method_call(self.__handle, __arg_array, 1)
             return self
 		}

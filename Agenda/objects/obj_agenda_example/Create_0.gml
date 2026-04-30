@@ -15,7 +15,7 @@ self.event.connect(function(agenda, goal_x, goal_y) {
     agenda.defer(30)
 })
 
-agenda_create(function(agenda) {
+var agenda = agenda_create(function(agenda) {
     agenda.extend(function(agenda) {
         agenda.delay_until(function() {
             return keyboard_check_pressed(vk_space)
@@ -33,3 +33,13 @@ agenda_create(function(agenda) {
 }).and_repeat_until(function() {
     return false
 })
+
+agenda_create(function(agenda, other_agenda) {
+    agenda.delay_until(function() {
+        return keyboard_check_pressed(vk_backspace)
+    })
+}, agenda).and_finally(function(other_agenda) {
+    other_agenda.cancel(true)
+})
+
+self.agenda = agenda

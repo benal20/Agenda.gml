@@ -201,36 +201,25 @@ function __Agenda(handler, parent_todo = undefined) constructor {
 	}
 
 	/// @description Cancels this Agenda and all other Agendas chained onto it and off of it.
-	/// @param {bool} cancel_parent_todo If true, and if one exists, cancel the defined parent_todo. Otherwise, complete it.
-	static cancel = function(cancel_parent_todo = false) {
+	static cancel = function() {
 		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
 			exit
 		}
 
 		self.state = AGENDA_STATE.CANCELED
 		
-		var is_final_agenda = true
 		for(var i = 0, n = array_length(self.todo_list); i < n; i ++) {
 			var todo = self.todo_list[i]
 			todo.cancel()
 		}
 		if self.next_agenda {
-			is_final_agenda = false
 			self.next_agenda.cancel()
 		}
 		if self.previous_agenda {
-			is_final_agenda = false
 			self.previous_agenda.cancel()
-			self.previous_agenda = undefined
 		}
-		
-		if is_final_agenda && self.parent_todo {
-			if cancel_parent_todo {
-				self.parent_todo.cancel()
-			}
-			else {
-				self.parent_todo.complete()
-			}
+		if self.parent_todo {
+			self.parent_todo.cancel()
 		}
 	}
 
