@@ -4,7 +4,23 @@ function __Agenda_Todo(agenda) constructor {
 	self.agenda = agenda
     self.extended_agenda = undefined
 	self.state = AGENDA_TODO_STATE.INCOMPLETE
+    
     self.time_source = undefined
+    self.event_connection = undefined
+    self.event_connection_predicate = undefined
+    
+    /// @ignore
+    static __cleanup = function() {
+        if self.time_source != undefined && time_source_exists(self.time_source) {
+            time_source_destroy(self.time_source)
+            self.time_source = undefined
+        }
+        if self.event_connection != undefined {
+            self.event_connection.disconnect()
+            self.event_connection = undefined
+        }
+        self.event_connection_predicate = undefined
+    }
 
 	/// @description Completes this Todo.
 	/// @param {any} [...] Additional values which overwrites the Agenda's values array if this agenda is the last to be completed.
@@ -14,6 +30,8 @@ function __Agenda_Todo(agenda) constructor {
 		if self.state != AGENDA_TODO_STATE.INCOMPLETE {
 			exit
 		}
+        
+        self.__cleanup()
 
 		self.state = AGENDA_TODO_STATE.COMPLETE
         with self.agenda {
@@ -27,10 +45,7 @@ function __Agenda_Todo(agenda) constructor {
 			exit
 		}
         
-        if self.time_source != undefined && time_source_exists(self.time_source) {
-            time_source_destroy(self.time_source)
-            self.time_source = undefined
-        }
+        self.__cleanup()
 		
 		self.state = AGENDA_TODO_STATE.CANCELED
         with self.agenda {
@@ -55,8 +70,6 @@ function __Agenda_Todo(agenda) constructor {
         }
 		
 		self.time_source = time_source_create(time_source_game, time, time_source_units_seconds, function() {
-            time_source_destroy(self.time_source)
-            self.time_source = undefined
             self.complete()
         })
         time_source_start(self.time_source)
@@ -75,8 +88,6 @@ function __Agenda_Todo(agenda) constructor {
         }
 		
 		self.time_source = time_source_create(time_source_game, frames, time_source_units_frames, function() {
-            time_source_destroy(self.time_source)
-            self.time_source = undefined
             self.complete()
         })
         time_source_start(self.time_source)
@@ -99,8 +110,6 @@ function __Agenda_Todo(agenda) constructor {
         self.time_source = time_source_create(time_source_game, 1, time_source_units_frames, function(predicate) {
             __GET_ARGS_AS_ARRAY
             if method_call(predicate, __arg_array, 1) {
-                time_source_destroy(self.time_source)
-                self.time_source = undefined
                 self.complete()
             }
             else {
@@ -110,6 +119,32 @@ function __Agenda_Todo(agenda) constructor {
         }, __arg_array)
         time_source_start(self.time_source)
         return self.time_source
+    }
+    
+    /// @description Completes this todo when an event fires.
+    /// @param {struct.__AgendaEvent}   event       The event that needs to fire to resolve this todo.
+    /// @param {function}               [predicate] If provided, the todo will only complete if the predicate function returns true.
+    /// @return {struct.__AgendaEventConnection}
+    static delay_until_event_fires_then_complete = function(event, predicate = undefined) {
+        if self.state != AGENDA_TODO_STATE.INCOMPLETE {
+			return undefined
+		}
+        
+        if predicate != undefined {
+            self.event_connection_predicate = predicate
+        }
+        
+        self.event_connection = event.connect(function(agenda) {
+            if self.event_connection_predicate != undefined {
+                __GET_ARGS_AS_ARRAY
+                if !method_call(self.event_connection_predicate, __arg_array, 1) {
+                    exit
+                }
+            }
+            self.complete()
+        })
+        
+        return self.event_connection
     }
     
     /// @description Executes a provided callback every frame over a given time period and animation curve, completing the todo at the end.
@@ -142,8 +177,6 @@ function __Agenda_Todo(agenda) constructor {
             method_call(callback, __arg_array)
             
             if time_alpha == 1 {
-                time_source_destroy(self.time_source)
-                self.time_source = undefined
                 self.complete()
             }
             else {

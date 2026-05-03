@@ -45,4 +45,10 @@ agenda_create(function(agenda, other_agenda) {
     other_agenda.cancel(true)
 })
 
+agenda_create(function(agenda) {
+    agenda.delay_until_event_fires(self.event)
+}).and_then(function() {
+    instance_create_depth(500, 500, 0, obj_agenda_example)
+})
+
 self.agenda = agenda

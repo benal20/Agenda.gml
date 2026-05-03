@@ -161,6 +161,21 @@ function __Agenda(handler, parent_todo = undefined) constructor {
         }
     }
     
+    static delay_until_event_fires = function(event, predicate) {
+        if !self.is_handling() {
+            show_error("Agenda.delay_until_event_fires can only be called while the Agenda is being handled.", true)
+        }
+		
+		if self.state == AGENDA_STATE.CANCELED || self.state == AGENDA_STATE.RESOLVED {
+			return undefined
+		}
+        
+        __GET_ARGS_AS_ARRAY
+        with self.create_todo() {
+            return method_call(self.delay_until_event_fires_then_complete, __arg_array)
+        }
+    }
+    
     /// @description Alias of create_todo().tween_then_complete(anim_curve, time, callback, ...)
     /// @param {Id.AnimationCurve}  anim_curve  The anim curve to use.
     /// @param {real}               time        Amount of time to tween for.
